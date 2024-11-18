@@ -48,6 +48,9 @@ as possible. We’re not quite there, but it’s pretty good.
 
 ## Contributing
 
+> [!NOTE]
+> teaBASE requires Xcode >=16, which requires macOS >=14.5. You can check device compatibility [here](https://support.apple.com/en-us/105113).
+
 Prefpanes are fiddly.
 
 1. Build the prefpane with Xcode.
