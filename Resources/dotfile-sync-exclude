@@ -1,0 +1,14 @@
+.DS_Store
+*.log
+
+/Applications
+/.cache
+/Desktop
+/Documents
+/Downloads
+/Library
+/Movies
+/Music
+/Photos
+/Pictures
+/Sites
