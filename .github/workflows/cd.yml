@@ -1,0 +1,23 @@
+name: cd
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: mxcl/xcodebuild@v3
+        with:
+          action: build
+          configuration: release
+          scheme: teaBASE.pane
+          code-sign-certificate: ${{ secrets.CODE_SIGN_CERTIFICATE }}
+
+      - run: |
+          BUILD_DIR="$(xcodebuild -configuration Release -project teaBASE.xcodeproj -scheme teaBASE.pane -showBuildSettings -json | jq -r '.[] | .buildSettings.CONFIGURATION_BUILD_DIR')"
+          echo "::set-output name=build::$BUILD_DIR"
+        id: dir
