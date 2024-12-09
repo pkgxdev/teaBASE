@@ -183,9 +183,31 @@
 }
 
 - (IBAction)onShareClicked:(id)sender {
-    NSAlert *alert = [NSAlert new];
-    alert.messageText = @"Unimplemented. Soz.";
-    [alert runModal];
+    [self openTwitterURLWithStars:self.ratingIndicator.intValue];
+}
+
+
+- (void)openTwitterURLWithStars:(int)starCount {
+    // Construct the stars string
+    NSMutableString *stars = [NSMutableString string];
+    for (int i = 0; i < 5; i++) {
+        if (i < starCount) {
+            [stars appendString:@"★"];
+        } else {
+            [stars appendString:@"☆"];
+        }
+    }
+
+    // URL encode the message
+    NSString *message = [NSString stringWithFormat:@"I got %@ developer security with @teaprotocol’s teaBASE", stars];
+    NSString *encodedMessage = [message stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+
+    // Construct the full URL
+    NSString *urlString = [NSString stringWithFormat:@"https://twitter.com/intent/tweet?text=%@", encodedMessage];
+    NSURL *url = [NSURL URLWithString:urlString];
+
+    // Open the URL
+    [NSWorkspace.sharedWorkspace openURL:url];
 }
 
 @end
