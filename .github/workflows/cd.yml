@@ -3,21 +3,44 @@ name: cd
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
-  deploy:
-    runs-on: macos-latest
+  update-download-redirect:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: mxcl/xcodebuild@v3
+      - uses: actions/checkout@v3
         with:
-          action: build
-          configuration: release
-          scheme: teaBASE.pane
-          code-sign-certificate: ${{ secrets.CODE_SIGN_CERTIFICATE }}
+          ref: gh-pages
+
+      - name: generate download.html
+        id: meta
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          url=$(gh release view --json assets | jq -r '.assets[]? | select(.name | endswith(".dmg")) | .url')
+          v=$(gh release view --json tagName --jq .tagName)
+
+          echo "::set-output name=v::$v"
+
+          cat <<-EOS > download.html
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <meta http-equiv="refresh" content="0; URL='$url'">
+              <title>Downloading teaBASE-$v.dmg&hellip;</title>
+          </head>
+          <body>
+              <p>Downloading <a href="$url">$url</a>&hellip;</p>
+          </body>
+          </html>
+          EOS
+
+      - uses: fregante/setup-git-user@v2
 
       - run: |
-          BUILD_DIR="$(xcodebuild -configuration Release -project teaBASE.xcodeproj -scheme teaBASE.pane -showBuildSettings -json | jq -r '.[] | .buildSettings.CONFIGURATION_BUILD_DIR')"
-          echo "::set-output name=build::$BUILD_DIR"
-        id: dir
+          git add download.html
+          git commit --message 'Update download.html for ${{ steps.meta.outputs.v }}'
+          git push origin gh-pages
