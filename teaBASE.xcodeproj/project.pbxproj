@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		632E38D92D01C60C00B7A044 /* self-update.sh in Resources */ = {isa = PBXBuildFile; fileRef = 632E38D82D01C60C00B7A044 /* self-update.sh */; };
 		634F60232CFE1F40006DF7B7 /* dotfile-sync.sh in Copy Scripts to Bundle */ = {isa = PBXBuildFile; fileRef = 634F60222CFE1F40006DF7B7 /* dotfile-sync.sh */; };
 		6367D7312CDD28E300250E84 /* github-integration.sh in Copy Scripts to Bundle */ = {isa = PBXBuildFile; fileRef = 6367D72E2CDD28CA00250E84 /* github-integration.sh */; };
 		63AA5EC82CEF5C6300BC8696 /* usr-local-install.sh in Copy Scripts to Bundle */ = {isa = PBXBuildFile; fileRef = 63AA5EC62CEF59DD00BC8696 /* usr-local-install.sh */; };
 		63AE66812CF618DC00EB278B /* docker-version.sh in Copy Scripts to Bundle */ = {isa = PBXBuildFile; fileRef = 63AE667F2CF6173D00EB278B /* docker-version.sh */; };
 		63FCE92D2D061C1B000DA22F /* install-docker.sh in Resources */ = {isa = PBXBuildFile; fileRef = 63FCE92C2D061C15000DA22F /* install-docker.sh */; };
 		63FCE92E2D061CE1000DA22F /* install-docker.sh in Copy Scripts to Bundle */ = {isa = PBXBuildFile; fileRef = 63FCE92C2D061C15000DA22F /* install-docker.sh */; };
+		63FF33402D07CDFF0021E1E2 /* self-update.sh in Copy Scripts to Bundle */ = {isa = PBXBuildFile; fileRef = 632E38D82D01C60C00B7A044 /* self-update.sh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,6 +23,7 @@
 			dstPath = ../Scripts;
 			dstSubfolderSpec = 6;
 			files = (
+				63FF33402D07CDFF0021E1E2 /* self-update.sh in Copy Scripts to Bundle */,
 				634F60232CFE1F40006DF7B7 /* dotfile-sync.sh in Copy Scripts to Bundle */,
 				63FCE92E2D061CE1000DA22F /* install-docker.sh in Copy Scripts to Bundle */,
 				63AE66812CF618DC00EB278B /* docker-version.sh in Copy Scripts to Bundle */,
@@ -212,7 +213,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				632E38D92D01C60C00B7A044 /* self-update.sh in Resources */,
 				63FCE92D2D061C1B000DA22F /* install-docker.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
