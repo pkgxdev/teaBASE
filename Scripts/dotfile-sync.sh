@@ -127,6 +127,7 @@ push() {
   git add "$HOME/.ssh/config"
   git add "$HOME/.vimrc"
   git add "$HOME/.zprofile"
+  git add "$HOME/.zshenv"
   git add "$HOME/.zshrc"
   set -e
 
