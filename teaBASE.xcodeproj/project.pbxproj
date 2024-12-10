@@ -11,7 +11,6 @@
 		6367D7312CDD28E300250E84 /* github-integration.sh in Copy Scripts to Bundle */ = {isa = PBXBuildFile; fileRef = 6367D72E2CDD28CA00250E84 /* github-integration.sh */; };
 		63AA5EC82CEF5C6300BC8696 /* usr-local-install.sh in Copy Scripts to Bundle */ = {isa = PBXBuildFile; fileRef = 63AA5EC62CEF59DD00BC8696 /* usr-local-install.sh */; };
 		63AE66812CF618DC00EB278B /* docker-version.sh in Copy Scripts to Bundle */ = {isa = PBXBuildFile; fileRef = 63AE667F2CF6173D00EB278B /* docker-version.sh */; };
-		63FCE92D2D061C1B000DA22F /* install-docker.sh in Resources */ = {isa = PBXBuildFile; fileRef = 63FCE92C2D061C15000DA22F /* install-docker.sh */; };
 		63FCE92E2D061CE1000DA22F /* install-docker.sh in Copy Scripts to Bundle */ = {isa = PBXBuildFile; fileRef = 63FCE92C2D061C15000DA22F /* install-docker.sh */; };
 		63FF33402D07CDFF0021E1E2 /* self-update.sh in Copy Scripts to Bundle */ = {isa = PBXBuildFile; fileRef = 632E38D82D01C60C00B7A044 /* self-update.sh */; };
 /* End PBXBuildFile section */
@@ -213,7 +212,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				63FCE92D2D061C1B000DA22F /* install-docker.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,7 +238,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "set -exo pipefail\n\ncd \"${DERIVED_FILE_DIR}\"\n\ncp pkgx \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}\"\ncp bpb \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}\"\n";
+			shellScript = "set -exo pipefail\n\ncd \"${DERIVED_FILE_DIR}\"\n\ncp pkgx \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}\"\ncp bpb/target/release/bpb \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}\"\n";
 		};
 		63AE66822CF754D200EB278B /* Build bpb */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -256,11 +254,12 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/bpb",
+				"$(DERIVED_FILE_DIR)/bpb/target/release/bpb",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Xcode sandboxes these scripts so only files you can specify as outputs can be created, lol ffs\ncd /tmp\n\nif ! test -d bpb/.git; then\n    git clone https://github.com/pkgxdev/bpb\n    cd bpb\nelse\n    cd bpb\n    git fetch -pft\n    git reset --hard origin/main\nfi\n\n\"${DERIVED_FILE_DIR}\"/pkgx cargo build --release\nmv target/release/bpb \"${DERIVED_FILE_DIR}\" \n";
+			shellScript = "# Xcode sandboxes these scripts so only files you can specify as outputs can be created, lol ffs\ncd \"$DERIVED_FILE_DIR\"\n\nif ! test -d bpb/.git; then\n    rm -rf bpb  # Xcode tries to be helpful by creating the intermediary directories for us but this breaks git clone\n    git clone https://github.com/pkgxdev/bpb\n    cd bpb\nelse\n    cd bpb\n    git fetch -pft\n    git reset --hard origin/main\nfi\n\n\"${DERIVED_FILE_DIR}\"/pkgx cargo build --release\n";
+			showEnvVarsInLog = 0;
 		};
 		63B188092CBD6AE30081E570 /* Download pkgx */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -305,6 +304,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 7WV56FL599;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sundries/Info.plist;
 				INFOPLIST_KEY_NSMainNibFile = teaBASE;
@@ -333,6 +333,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 7WV56FL599;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sundries/Info.plist;
 				INFOPLIST_KEY_NSMainNibFile = teaBASE;

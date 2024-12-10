@@ -1,18 +1,29 @@
 @import Foundation;
 @import AppKit;
 
+NSString *brewPath(void) {
+#if __arm64__
+    return @"/opt/homebrew/bin/brew";
+#else
+    return @"/usr/local/bin/brew";
+#endif
+}
+
 BOOL run(NSString *cmd, NSArray *args, NSPipe *pipe) {
     if (![NSFileManager.defaultManager isExecutableFileAtPath:cmd]) {
         // throws an exception if cannot execute which makes the prefpane go POOF
         return -1;
     }
     
+    id brew = [brewPath() stringByDeletingLastPathComponent];
+    id PATH = [NSString stringWithFormat:@"%@:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin", brew];
+    
     NSTask *task = [NSTask new];
     [task setLaunchPath:cmd];
     [task setArguments:args];
     // need to add other PATHs to PATH since GUI apps don’t operate with the user’s shell rc added
     [task setEnvironment:@{
-        @"PATH": @"/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        @"PATH": PATH,
         @"HOME": NSHomeDirectory()
     }];
     if (pipe) [task setStandardError:pipe];
@@ -33,7 +44,8 @@ BOOL run(NSString *cmd, NSArray *args, NSPipe *pipe) {
 }
 
 NSString *which(NSString *cmd) {
-    NSArray *paths = @[@"/opt/homebrew/bin", @"/usr/local/bin", @"/usr/bin", @"/bin", @"/usr/sbin", @"/sbin"];
+    id brew = [brewPath() stringByDeletingLastPathComponent];
+    NSArray *paths = @[brew, @"/usr/local/bin", @"/usr/bin", @"/bin", @"/usr/sbin", @"/sbin"];
     
     for (NSString *dir in paths) {
         NSString *path = [dir stringByAppendingPathComponent:cmd];
