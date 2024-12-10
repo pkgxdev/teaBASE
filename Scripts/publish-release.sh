@@ -33,6 +33,10 @@ major|minor|patch|prerelease)
   echo "usage $0 <major|minor|patch|prerelease|VERSION>" >&2
   exit 1;;
 *)
+  if test "$(npx -- semver \"$1\")" != "$1"; then
+    echo "$1 doesn't look like valid semver."
+    exit 1
+  fi
   v_new=$1
   ;;
 esac
