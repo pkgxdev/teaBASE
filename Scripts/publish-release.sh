@@ -20,7 +20,7 @@ if [ "$(git rev-parse --abbrev-ref HEAD)" != main ]; then
 fi
 
 # ensure we have the latest version tags
-git fetch origin -pft
+git fetch origin --prune --tags
 
 versions="$(git tag | grep '^v[0-9]\+\.[0-9]\+\.[0-9]\+')"
 v_latest="$(npx -- semver --include-prerelease $versions | tail -n1)"
