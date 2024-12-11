@@ -441,8 +441,11 @@
         
     if (sender.state == NSControlStateValueOn) {
         
-        //FIXME if XDG_CONFIG_HOME set uses that which requires us to run a script in a login shell to extract
+        //FIXME if XDG_* vars set uses that which requires us to run a script in a login shell to extract
         id configfile = [NSHomeDirectory() stringByAppendingPathComponent:@".config/pkgx/bpb.toml"];
+        if (![NSFileManager.defaultManager isReadableFileAtPath:configfile]) {
+            configfile = [NSHomeDirectory() stringByAppendingPathComponent:@".local/share/pkgx/bpb.toml"];
+        }
         
         if ([NSFileManager.defaultManager isReadableFileAtPath:configfile]) {
             run(git, [config arrayByAddingObjectsFromArray:@[@"commit.gpgsign", @"true"]], nil);
