@@ -58,6 +58,12 @@
 
 @property (weak) IBOutlet NSTextField *selfVersionLabel;
 
+@property (weak) IBOutlet NSTextField *gitIdentityLabel;
+@property (weak) IBOutlet NSTextField *gitIdentityUsernameLabel;
+@property (weak) IBOutlet NSTextField *gitIdentityEmailLabel;
+@property (weak) IBOutlet NSWindow *gitIdentityWindow;
+
+
 @end
 
 

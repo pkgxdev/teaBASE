@@ -34,6 +34,7 @@
     [self calculateSecurityRating];
     
     [self updateGitGudListing];
+    [self updateGitIdentity];
     
     id v = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     if (v) {
@@ -60,6 +61,17 @@
     } else if (self.ratingIndicator.intValue <= 1) {
         [self.ratingIndicator setFillColor:[NSColor systemRedColor]];
     }
+}
+
+- (void)updateGitIdentity {
+    id pkgx = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/MacOS/pkgx"];
+    id user = output(pkgx, @[@"git", @"config", @"--global", @"user.name"]);
+    id mail = output(pkgx, @[@"git", @"config", @"--global", @"user.email"]);
+    user = [user stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    mail = [mail stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.gitIdentityLabel.stringValue = [NSString stringWithFormat:@"%@ <%@>", user, mail];
+    self.gitIdentityUsernameLabel.stringValue = user;
+    self.gitIdentityEmailLabel.stringValue = mail;
 }
 
 - (void)updateSSHStates {
@@ -706,7 +718,7 @@ static BOOL installer(NSURL *url) {
 
 @implementation teaBASE (git)
 
-- (IBAction)installGit:(NSComboButton *)sender {
+- (IBAction)installGit:(NSButton *)sender {
     if (sender.selectedTag != 2) {
         run(@"/usr/bin/xcode-select", @[@"--install"], nil);
         // for weird reasons the install window does not come to the front on Somona
@@ -714,6 +726,18 @@ static BOOL installer(NSURL *url) {
     } else {
         run(brewPath(), @[@"install", @"git"], nil);
     }
+}
+
+- (IBAction)editGitIdentity:(NSButton *)sender {
+    [sender.window beginSheet:self.gitIdentityWindow completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode != NSModalResponseOK) return;
+        
+        id pkgx = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/MacOS/pkgx"];
+        run(pkgx, @[@"git", @"config", @"--global", @"user.name", self.gitIdentityUsernameLabel.stringValue], nil);
+        run(pkgx, @[@"git", @"config", @"--global", @"user.email", self.gitIdentityEmailLabel.stringValue], nil);
+        
+        self.gitIdentityLabel.stringValue = [NSString stringWithFormat:@"%@ <%@>", self.gitIdentityUsernameLabel.stringValue, self.gitIdentityEmailLabel.stringValue];
+    }];
 }
 
 - (void)updateGitGudListing {
@@ -752,7 +776,7 @@ static BOOL installer(NSURL *url) {
     }
     
     [self.mainView.window beginSheet:self.gitGudWindow completionHandler:^(NSModalResponse returnCode) {
-        
+        [self updateGitGudListing];
     }];
 }
 
