@@ -167,9 +167,8 @@
 }
 
 - (BOOL)gpgSignEnabled {
-    NSURL *home = [NSFileManager.defaultManager homeDirectoryForCurrentUser];
-    NSString *path = [home.path stringByAppendingPathComponent:@".gitconfig"];
-    return file_contains(path, @"gpgsign = true");
+    id pkgx = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/MacOS/pkgx"];
+    return [output(pkgx, @[@"git", @"config", @"--global", @"commit.gpgsign"]) isEqualToString:@"true"];
 }
 
 - (BOOL)homebrewInstalled {
