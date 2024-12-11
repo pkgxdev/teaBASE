@@ -1,4 +1,6 @@
-#!/usr/bin/env -S pkgx +gh +gum +create-dmg +npx bash -eo pipefail
+#!/usr/bin/env -S pkgx +gh +gum +create-dmg +npx +rustup +xz bash -eo pipefail
+
+cd "$(dirname "$0")"/..
 
 if ! test "$APPLE_PASSWORD"; then
   echo "\$APPLE_PASSWORD must be set to an Apple App Specific Password"
@@ -17,6 +19,10 @@ fi
 if [ "$(git rev-parse --abbrev-ref HEAD)" != main ]; then
   echo "error: requires main branch" >&2
   exit 1
+fi
+
+if test "$VERBOSE"; then
+  set -x
 fi
 
 # ensure we have the latest version tags
@@ -46,7 +52,7 @@ if [ $v_new = $v_latest ]; then
   exit 1
 fi
 
-if ! gh release view $v_new 2>/dev/null; then
+if ! gh release view v$v_new >/dev/null 2>&1; then
   gum confirm "prepare draft release for $v_new?" || exit 1
 
   gh release create \
@@ -56,7 +62,8 @@ if ! gh release view $v_new 2>/dev/null; then
     --notes-start-tag=v$v_latest \
     --title=v$v_new
 else
-  gum format "existing $v_new release found, using that"
+  gum format "> existing $v_new release found, using that"
+  echo  #spacer
 fi
 
 tmp_xcconfig="$(mktemp)"
@@ -67,7 +74,28 @@ xcodebuild \
   -configuration Release \
   -xcconfig "$tmp_xcconfig" \
   -derivedDataPath ./build \
+  -destination "generic/platform=macOS" \
+  ARCHS="x86_64 arm64" \
+  EXCLUDED_ARCHS="" \
   build
+
+BPB_DIR="$PWD/build/Build/Intermediates.noindex/teaBASE.build/Release/teaBASE.build/DerivedSources/bpb"
+pushd "$BPB_DIR"
+rustup target add x86_64-apple-darwin
+~/.cargo/bin/cargo build --release --target x86_64-apple-darwin
+popd
+
+lipo -create \
+  -output build/Build/Products/Release/teaBASE.prefPane/Contents/MacOS/bpb \
+  "$BPB_DIR"/target/release/bpb \
+  "$BPB_DIR"/target/x86_64-apple-darwin/release/bpb
+
+curl https://pkgx.sh/Darwin/x86_64 -o build/pkgx_intel
+
+lipo -create \
+  -output build/Build/Products/Release/teaBASE.prefPane/Contents/MacOS/pkgx \
+  build/pkgx_intel \
+  build/Build/Products/Release/teaBASE.prefPane/Contents/MacOS/pkgx
 
 codesign \
   --entitlements ~/src/teaBASE/Sundries/teaBASE.entitlements \

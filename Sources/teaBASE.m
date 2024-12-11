@@ -121,7 +121,7 @@
 }
 
 - (void)updateVersions {
-    NSString *brew_out = output(@"/opt/homebrew/bin/brew", @[@"--version"]);
+    NSString *brew_out = output(brewPath(), @[@"--version"]);
     NSString *pkgx_out = output(@"/usr/local/bin/pkgx", @[@"--version"]);
     NSString *xcode_clt_out = output(@"/usr/sbin/pkgutil", @[@"--pkg-info=com.apple.pkg.CLTools_Executables"]);
     
@@ -161,7 +161,7 @@
 }
 
 - (BOOL)homebrewInstalled {
-    return [NSFileManager.defaultManager isReadableFileAtPath:@"/opt/homebrew/bin/brew"];
+    return [NSFileManager.defaultManager isReadableFileAtPath:brewPath()];
 }
 
 - (BOOL)pkgxInstalled {
@@ -555,6 +555,7 @@
             [self.brewInstallWindowSpinner stopAnimation:sender];
         }];
     } else {
+    #if __arm64
         // Get the contents of the directory
         NSError *error = nil;
         NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:@"/opt/homebrew" error:&error];
@@ -576,6 +577,12 @@
         }
         
         [self updateVersions];
+    #else
+        NSAlert *alert = [NSAlert new];
+        alert.informativeText = @"Please manually run the Homebrew uninstall script";
+        [alert runModal];
+        [sender setState:NSControlStateValueOn];
+    #endif
     }
 }
 
@@ -610,7 +617,7 @@ static BOOL installer(NSURL *url) {
                 
                 if (self.setupBrewShellEnvCheckbox.state == NSControlStateValueOn) {
                     NSString *zprofilePath = [NSHomeDirectory() stringByAppendingPathComponent:@".zprofile"];
-                    NSString *cmdline = @"eval \"$(/opt/homebrew/bin/brew shellenv)\"";
+                    NSString *cmdline = [NSString stringWithFormat:@"eval \"$(%@ shellenv)\"", brewPath()];
                     
                     BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:zprofilePath];
                     
@@ -705,7 +712,7 @@ static BOOL installer(NSURL *url) {
         // for weird reasons the install window does not come to the front on Somona
         run(@"/usr/bin/open", @[@"/System/Library/CoreServices/Install Command Line Developer Tools.app"], nil);
     } else {
-        run(@"/opt/homebrew/bin/brew", @[@"install", @"git"], nil);
+        run(brewPath(), @[@"install", @"git"], nil);
     }
 }
 

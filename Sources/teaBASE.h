@@ -83,3 +83,4 @@ BOOL file_contains(NSString *path, NSString *token);
 BOOL sudo_run_cmd(char *cmd, char *arguments[], NSString *errorTitle);
 NSString *output(NSString *cmd, NSArray *args);
 NSString *which(NSString *cmd);
+NSString *brewPath(void);
