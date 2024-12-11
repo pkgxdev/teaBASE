@@ -788,7 +788,7 @@
                                 </imageView>
                                 <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xRm-cz-c6I">
                                     <rect key="frame" x="98" y="17" width="253" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="A secure, powerful base for devs like you" id="jS8-UN-2fa">
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Manage your setup, configuration and security for development." id="jS8-UN-2fa">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
