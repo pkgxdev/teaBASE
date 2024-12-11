@@ -69,9 +69,11 @@
     id mail = output(pkgx, @[@"git", @"config", @"--global", @"user.email"]);
     user = [user stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     mail = [mail stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    self.gitIdentityLabel.stringValue = [NSString stringWithFormat:@"%@ <%@>", user, mail];
-    self.gitIdentityUsernameLabel.stringValue = user;
-    self.gitIdentityEmailLabel.stringValue = mail;
+    if (user && mail) {
+        self.gitIdentityLabel.stringValue = [NSString stringWithFormat:@"%@ <%@>", user, mail];
+        self.gitIdentityUsernameLabel.stringValue = user;
+        self.gitIdentityEmailLabel.stringValue = mail;
+    }
 }
 
 - (void)updateSSHStates {
