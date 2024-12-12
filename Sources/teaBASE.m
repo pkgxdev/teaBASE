@@ -339,7 +339,23 @@
         return;
     }
 
-    content = [NSString stringWithFormat:@"Recreate the following at: `~/.ssh/%@.pub`:\n\n%@", filename, content];
+    // Break the pubkic key content into 70-char lines (aligned with the private key visually) to make it fit the page
+    NSMutableString *formattedContent = [NSMutableString string];
+    NSUInteger lineLength = 70;
+    NSUInteger currentIndex = 0;
+    
+    while (currentIndex < content.length) {
+        NSUInteger remainingLength = content.length - currentIndex;
+        NSUInteger substringLength = MIN(lineLength, remainingLength);
+        NSRange range = NSMakeRange(currentIndex, substringLength);
+        
+        [formattedContent appendString:[content substringWithRange:range]];
+        [formattedContent appendString:@"\n"];
+        
+        currentIndex += substringLength;
+    }
+    
+    content = [NSString stringWithFormat:@"Recreate the following at: `~/.ssh/%@.pub`:\n\n%@", filename, formattedContent];
     
     NSString *privkey_content = [NSString stringWithContentsOfFile:privkey_path encoding:NSUTF8StringEncoding error:&error];
     
@@ -361,6 +377,11 @@
     // Create an NSTextView and set the document content
     NSTextView *textView = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 612, 612)]; // Typical page size
     [textView setString:content];
+
+    // Set font to Menlo (monospace) and make it smaller in order to fit the page
+    NSFont *monoFont = [NSFont fontWithName:@"Menlo" size:10.4];
+    [textView setFont:monoFont];
+    [[textView textStorage] setFont:monoFont]; // Ensure the entire text storage uses the font
     
     // Configure the print operation for the text view
     NSPrintOperation *printOperation = [NSPrintOperation printOperationWithView:textView];
@@ -561,6 +582,11 @@
     // Create an NSTextView and set the document content
     NSTextView *textView = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 612, 612)]; // Typical page size
     [textView setString:content];
+    
+    // Set font to Menlo (monospace) and make it smaller in order to fit the page
+    NSFont *monoFont = [NSFont fontWithName:@"Menlo" size:9.6];
+    [textView setFont:monoFont];
+    [[textView textStorage] setFont:monoFont]; // Ensure the entire text storage uses the font
     
     // Configure the print operation for the text view
     NSPrintOperation *printOperation = [NSPrintOperation printOperationWithView:textView];
