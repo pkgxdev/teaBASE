@@ -674,12 +674,38 @@ static BOOL installer(NSURL *url) {
     return sudo_run_cmd("/usr/sbin/installer", arguments, @"Homebrew install failed");
 }
 
+static NSString* fetchLatestBrewVersion(void) {
+    NSURL *url = [NSURL URLWithString:@"https://api.github.com/repos/Homebrew/brew/releases/latest"];
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    if (!data) return nil;
+    
+    NSError *error = nil;
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    if (error || !json[@"tag_name"]) return nil;
+    
+    NSString *version = json[@"tag_name"];
+    if ([version hasPrefix:@"v"]) {
+        version = [version substringFromIndex:1];
+    }
+    return version;
+}
+
 - (IBAction)installBrewStep2:(NSButton *)sender {
     [sender setEnabled:NO];
     [self.brewInstallWindowSpinner startAnimation:sender];
     
-    //TODO use API to determine latest release?
-    id urlstr = @"https://github.com/Homebrew/brew/releases/download/4.4.9/Homebrew-4.4.9.pkg";
+    NSString *version = fetchLatestBrewVersion();
+    if (!version) {
+        NSAlert *alert = [NSAlert new];
+        alert.messageText = @"Failed to fetch latest Homebrew version";
+        alert.informativeText = @"Please try again later or install manually.";
+        [alert runModal];
+        [NSApp endSheet:self.brewInstallWindow returnCode:NSModalResponseAbort];
+        [sender setEnabled:YES];
+        return;
+    }
+    
+    NSString *urlstr = [NSString stringWithFormat:@"https://github.com/Homebrew/brew/releases/download/%@/Homebrew-%@.pkg", version, version];
     NSURL *url = [NSURL URLWithString:urlstr];
 
     [[[NSURLSession sharedSession] downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
