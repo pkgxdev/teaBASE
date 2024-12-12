@@ -74,7 +74,8 @@ NSString *output(NSString *cmd, NSArray *args) {
     [task waitUntilExit];
     if (task.terminationStatus == 0) {
         NSData *data = [[pipe fileHandleForReading] readDataToEndOfFile];
-        return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        id str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        return [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     } else {
         return nil;
     }

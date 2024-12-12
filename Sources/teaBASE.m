@@ -67,8 +67,6 @@
     id pkgx = [[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"Contents/MacOS/pkgx"];
     id user = output(pkgx, @[@"git", @"config", @"--global", @"user.name"]);
     id mail = output(pkgx, @[@"git", @"config", @"--global", @"user.email"]);
-    user = [user stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    mail = [mail stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (user && mail) {
         self.gitIdentityLabel.stringValue = [NSString stringWithFormat:@"%@ <%@>", user, mail];
         self.gitIdentityUsernameLabel.stringValue = user;
