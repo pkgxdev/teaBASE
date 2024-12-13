@@ -302,11 +302,33 @@
             [self calculateSecurityRating];
         }];
     } else {
-        NSAlert *alert = [NSAlert new];
-        alert.messageText = @"Unimplemented. Soz.";
-        [alert runModal];
-        
-        [sender setState:NSControlStateValueOn];
+        [self.mainView.window beginSheet:self.sshRemovePassphraseWindow completionHandler:^(NSModalResponse returnCode) {
+            if (returnCode == NSModalResponseCancel) {
+                [sender setState:NSControlStateValueOn];
+                return;
+            }
+            
+            id path = [self sshPrivateKeyFile];
+            id passphrase = self.sshRemovePassphraseTextField.stringValue;
+            
+            NSPipe *pipe = [NSPipe pipe];
+            
+            if (!run(@"/usr/bin/ssh-keygen", @[@"-p", @"-P", passphrase, @"-N", @"", @"-f", path], pipe)) {
+                id stderr = [NSString stringWithUTF8String:[pipe.fileHandleForReading readDataToEndOfFile].bytes];
+                
+                NSAlert *alert = [NSAlert new];
+                alert.messageText = @"Failed to remove passphrase. Incorrect passphrase?";
+                alert.informativeText = stderr;
+                [alert runModal];
+                [sender setState:NSControlStateValueOn];
+                [self.sshRemovePassphraseTextField setStringValue:@""]; // Clear passphrase from memory
+                return;
+            }
+            
+            [self.sshRemovePassphraseTextField setStringValue:@""]; // Clear passphrase from memory
+            [self updateSSHStates];
+            [self calculateSecurityRating];
+        }];
     }
 }
 
@@ -325,6 +347,11 @@
             [NSApp endSheet:self.sshPassphraseWindow returnCode:NSModalResponseOK];
         }
     }];
+}
+
+- (IBAction)removeSSHPassPhraseStep2:(id)sender {
+    // We just need to go back to the main window's sheet
+    [NSApp endSheet:self.sshRemovePassphraseWindow returnCode:NSModalResponseOK];
 }
 
 - (void)printSSHEmergencyKit:(NSString *)passphrase sender:(id)sender {
@@ -504,7 +531,11 @@
 @implementation teaBASE (NSTextFieldDelegate)
 
 - (void)controlTextDidChange:(NSNotification *)obj {
-    self.sshApplyPassphraseButton.enabled = self.sshPassphraseTextField.stringValue.length > 0;
+    if ([obj.object isEqual:self.sshRemovePassphraseTextField]) {
+        self.sshRemovePassphraseButton.enabled = self.sshRemovePassphraseTextField.stringValue.length > 0;
+    } else {
+        self.sshApplyPassphraseButton.enabled = self.sshPassphraseTextField.stringValue.length > 0;
+    }
 }
 
 @end
