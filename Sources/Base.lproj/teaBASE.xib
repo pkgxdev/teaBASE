@@ -63,7 +63,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="176" y="715" width="490" height="1235"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1470" height="919"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1512" height="950"/>
             <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="490" height="1589"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -381,7 +381,7 @@
                                     </textFieldCell>
                                 </textField>
                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="GQy-3y-6hf" userLabel="Open brew.sh">
-                                    <rect key="frame" x="97" y="151" width="13" height="11.5"/>
+                                    <rect key="frame" x="97" y="151" width="13.5" height="11.5"/>
                                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="rectangle.portrait.and.arrow.right" catalog="system" imagePosition="only" alignment="center" controlSize="mini" imageScaling="proportionallyUpOrDown" inset="2" id="6Ww-zO-YN6">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="miniSystem"/>
@@ -391,7 +391,7 @@
                                     </connections>
                                 </button>
                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="3OU-px-ciN" userLabel="Open pkgx.sh">
-                                    <rect key="frame" x="59" y="96" width="13" height="11.5"/>
+                                    <rect key="frame" x="59" y="96" width="13.5" height="11.5"/>
                                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="rectangle.portrait.and.arrow.right" catalog="system" imagePosition="only" alignment="center" controlSize="mini" imageScaling="proportionallyUpOrDown" inset="2" id="MIV-5I-xWc">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="miniSystem"/>
@@ -439,7 +439,7 @@
                                     </textFieldCell>
                                 </textField>
                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="loM-HP-nA1" userLabel="Open brew.sh">
-                                    <rect key="frame" x="96" y="206" width="13" height="11.5"/>
+                                    <rect key="frame" x="96" y="206" width="13.5" height="11.5"/>
                                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="rectangle.portrait.and.arrow.right" catalog="system" imagePosition="only" alignment="center" controlSize="mini" imageScaling="proportionallyUpOrDown" inset="2" id="70L-RP-L8Z">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="miniSystem"/>
@@ -495,7 +495,7 @@
                                     </textFieldCell>
                                 </textField>
                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="hEh-qp-ehP" userLabel="Open docker.com">
-                                    <rect key="frame" x="73" y="41" width="13" height="11.5"/>
+                                    <rect key="frame" x="73" y="41" width="13.5" height="11.5"/>
                                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="rectangle.portrait.and.arrow.right" catalog="system" imagePosition="only" alignment="center" controlSize="mini" imageScaling="proportionallyUpOrDown" inset="2" id="hVD-SJ-K5k">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="miniSystem"/>
@@ -1056,7 +1056,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="283" y="305" width="413" height="273"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1470" height="919"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1512" height="950"/>
             <view key="contentView" misplaced="YES" id="OwU-br-c7g">
                 <rect key="frame" x="0.0" y="0.0" width="413" height="273"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -1158,7 +1158,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="283" y="305" width="413" height="273"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1470" height="919"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1512" height="950"/>
             <view key="contentView" misplaced="YES" id="ga6-er-FDC">
                 <rect key="frame" x="0.0" y="0.0" width="413" height="273"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -1261,7 +1261,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="283" y="305" width="414" height="306"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1470" height="919"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1512" height="950"/>
             <view key="contentView" misplaced="YES" id="Ye9-Xh-Sck">
                 <rect key="frame" x="0.0" y="0.0" width="414" height="306"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -1357,14 +1357,14 @@ Gw
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="283" y="305" width="414" height="264"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1470" height="919"/>
-            <view key="contentView" misplaced="YES" id="lHu-Ep-T2n">
-                <rect key="frame" x="0.0" y="0.0" width="414" height="264"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1512" height="950"/>
+            <view key="contentView" id="lHu-Ep-T2n">
+                <rect key="frame" x="0.0" y="0.0" width="413" height="238"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentType="password" translatesAutoresizingMaskIntoConstraints="NO" id="yIh-Fr-yne">
                         <rect key="frame" x="20" y="48" width="373" height="54"/>
-                        <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Current Passphrase" drawsBackground="YES" id="dQZ-8n-ye4">
+                        <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Your current passphrase" drawsBackground="YES" id="dQZ-8n-ye4">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1392,35 +1392,35 @@ Gw
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <color key="bezelColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                         <connections>
                             <action selector="removeSSHPassPhraseStep2:" target="-2" id="GnQ-0O-947"/>
                         </connections>
                     </button>
-                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gsA-95-5y7">
-                        <rect key="frame" x="19" y="228" width="192" height="16"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Remove SSH Key Passphrase" id="95S-Kh-fhG">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gsA-95-5y7">
+                        <rect key="frame" x="18" y="202" width="241" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Remove SSH Private Key Passphrase" id="95S-Kh-fhG">
                             <font key="font" metaFont="systemBold"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ui2-qs-zL0">
-                        <rect key="frame" x="19" y="172" width="377" height="48"/>
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ui2-qs-zL0">
+                        <rect key="frame" x="18" y="146" width="377" height="48"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="373" id="93H-L8-nuH"/>
                         </constraints>
-                        <textFieldCell key="cell" id="OWf-5K-PPA">
+                        <textFieldCell key="cell" title="Enter your SSH passphrase to decrypt and rewrite your SSH private key file. After decryption your passphrase can be forgotten." id="OWf-5K-PPA">
                             <font key="font" metaFont="system"/>
-                            <string key="title">Enter the current passphrase to remove it from your SSH key. After removal, you won't need to enter a passphrase when using this key.</string>
                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2h2-Ei-xxg">
-                        <rect key="frame" x="19" y="136" width="377" height="28"/>
-                        <textFieldCell key="cell" controlSize="small" title="Note: While this makes using the key more convenient, it also means anyone with access to your key file can use it." id="yWd-nO-90A">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="2h2-Ei-xxg">
+                        <rect key="frame" x="18" y="110" width="377" height="28"/>
+                        <textFieldCell key="cell" controlSize="small" title="If your passphrase-less local, private key file is compromised, systems secured with it should also be considered compromised." id="yWd-nO-90A">
                             <font key="font" metaFont="smallSystem"/>
-                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="textColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
@@ -1453,7 +1453,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="140" y="178" width="413" height="282"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1470" height="919"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1512" height="950"/>
             <view key="contentView" id="1bJ-M5-Tf3">
                 <rect key="frame" x="0.0" y="0.0" width="413" height="282"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -1615,7 +1615,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="140" y="178" width="413" height="425"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1470" height="919"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1512" height="950"/>
             <view key="contentView" id="OTG-s6-8dM">
                 <rect key="frame" x="0.0" y="0.0" width="413" height="425"/>
                 <autoresizingMask key="autoresizingMask"/>
