@@ -17,8 +17,10 @@
 @property (weak) IBOutlet NSLevelIndicator *ratingIndicator;
 @property (weak) IBOutlet NSTableView *gitExtensionsTable;
 @property (weak) IBOutlet NSTextField *sshPassphraseTextField;
+@property (weak) IBOutlet NSTextField *sshRemovePassphraseTextField;
 @property (weak) IBOutlet NSSwitch *sshPassphraseICloudIntegrationSwitch;
 @property (weak) IBOutlet NSButton *sshApplyPassphraseButton;
+@property (weak) IBOutlet NSButton *sshRemovePassphraseButton;
 
 @property (weak) IBOutlet NSImageView *greenCheckGPGBackup;
 @property (weak) IBOutlet NSImageView *greenCheckGitHubIntegration;
@@ -33,6 +35,7 @@
 @property (weak) IBOutlet NSTextField *setupGPGWindowEmail;
 
 @property (weak) IBOutlet NSWindow *sshPassphraseWindow;
+@property (weak) IBOutlet NSWindow *sshRemovePassphraseWindow;
 @property (weak) IBOutlet NSWindow *gpgPassphraseWindow;
 @property (weak) IBOutlet NSWindow *brewInstallWindow;
 
