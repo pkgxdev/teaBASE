@@ -150,7 +150,7 @@
 
     NSString *docker_version = output(path, @[]);
     
-    BOOL has_clt = [NSFileManager.defaultManager isExecutableFileAtPath:@"/Library/Developer/CommandLineTools/usr/bin/git"];
+    BOOL has_clt = [self xcodeCLTInstalled];
     //TODO Xcode can be installed anywhere, instead check for the bundle ID with spotlight API or mdfind
     BOOL has_xcode = [NSFileManager.defaultManager isExecutableFileAtPath:@"/Applications/Xcode.app"];
     // emulate login shell to ensure PATH contains everything the user has configured
