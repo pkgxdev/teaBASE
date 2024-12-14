@@ -122,14 +122,23 @@
 }
 
 - (BOOL)xcodeCLTInstalled {
-    if ([NSFileManager.defaultManager isExecutableFileAtPath:@"/Library/Developer/CommandLineTools/usr/bin/git"]) {
-        return YES;
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/usr/bin/xcode-select"];
+    [task setArguments:@[@"-p"]];
+    
+    NSPipe *nullPipe = [NSPipe pipe];
+    [task setStandardOutput:nullPipe];
+    [task setStandardError:nullPipe];
+    
+    NSError *error = nil;
+    [task launchAndReturnError:&error];
+    
+    if (error) {
+        return NO;
     }
-    //TODO Xcode can be installed anywhere, instead check for the bundle ID with spotlight API or mdfind
-    if ([NSFileManager.defaultManager isExecutableFileAtPath:@"/Applications/Xcode.app"]) {
-        return YES;
-    }
-    return NO;
+    
+    [task waitUntilExit];
+    return task.terminationStatus == 0;
 }
 
 - (void)updateVersions {
