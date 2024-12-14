@@ -141,6 +141,26 @@
     return task.terminationStatus == 0;
 }
 
+- (BOOL)xcodeInstalled {
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/usr/bin/xcodebuild"];
+    [task setArguments:@[@"-version"]];
+    
+    NSPipe *nullPipe = [NSPipe pipe];
+    [task setStandardOutput:nullPipe];
+    [task setStandardError:nullPipe];
+    
+    NSError *error = nil;
+    [task launchAndReturnError:&error];
+    
+    if (error) {
+        return NO;
+    }
+    
+    [task waitUntilExit];
+    return task.terminationStatus == 0;
+}
+
 - (void)updateVersions {
     NSString *brew_out = output(brewPath(), @[@"--version"]);
     NSString *pkgx_out = output(@"/usr/local/bin/pkgx", @[@"--version"]);
@@ -151,8 +171,7 @@
     NSString *docker_version = output(path, @[]);
     
     BOOL has_clt = [self xcodeCLTInstalled];
-    //TODO Xcode can be installed anywhere, instead check for the bundle ID with spotlight API or mdfind
-    BOOL has_xcode = [NSFileManager.defaultManager isExecutableFileAtPath:@"/Applications/Xcode.app"];
+    BOOL has_xcode = [self xcodeInstalled];
     // emulate login shell to ensure PATH contains everything the user has configured
     // ∵ GUI apps do not have full user PATH set otherwise
     NSString *git_out = nil;
