@@ -23,7 +23,7 @@ Our `gpg` signing is best in class secure with way less bloat, hassle and
 overhead than GNU’s GPG suite.
 
 > [!TIP]
-> We store your GPG private key in the macOS keychain, signed such that it is
+> We store your GPG private key in the macOS keychain, signed such that it
 > is impossible for any other app to get it. We never expose it, it is fetched
 > for as small a time as possible into memory, used to sign your commits and
 > then discarded.
