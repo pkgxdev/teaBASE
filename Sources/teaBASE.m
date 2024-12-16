@@ -9,37 +9,88 @@
 }
 
 - (void)willSelect {
-    [self updateSSHStates];
-
-    BOOL hasSignedCommits = [self gpgSignEnabled];
+    // Initially disable all interactive elements
+    [self.gpgSignSwitch setEnabled:NO];
+    [self.homebrewSwitch setEnabled:NO];
+    [self.pkgxSwitch setEnabled:NO];
+    [self.xcodeCLTSwitch setEnabled:NO];
+    [self.dockerSwitch setEnabled:NO];
+    [self.dotfileSyncSwitch setEnabled:NO];
+    [self.dotfileSyncEditWhitelistButton setEnabled:NO];
+    [self.dotfileSyncViewRepoButton setEnabled:NO];
     
-    [self updateVersions];
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_queue_t backgroundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
-    [self.gpgSignSwitch setState:hasSignedCommits ? NSControlStateValueOn : NSControlStateValueOff];
-    [self.homebrewSwitch setState:[self homebrewInstalled] ? NSControlStateValueOn : NSControlStateValueOff];
-    [self.pkgxSwitch setState:[self pkgxInstalled] ? NSControlStateValueOn : NSControlStateValueOff];
-    [self.xcodeCLTSwitch setState:[self xcodeCLTInstalled] ? NSControlStateValueOn : NSControlStateValueOff];
-    [self.dockerSwitch setState:self.dockerVersion.stringValue.length > 0 ? NSControlStateValueOn : NSControlStateValueOff];
-    [self.dotfileSyncSwitch setState:self.dotfileSyncEnabled ? NSControlStateValueOn : NSControlStateValueOff];
-    [self.dotfileSyncEditWhitelistButton setEnabled:self.dotfileSyncSwitch.state == NSControlStateValueOn];
-    [self.dotfileSyncViewRepoButton setEnabled:self.dotfileSyncEditWhitelistButton.enabled];
+    // Create containers for async results
+    __block BOOL hasSignedCommits = NO;
+    __block BOOL homebrewInstalled = NO;
+    __block BOOL pkgxInstalled = NO;
+    __block BOOL xcodeCLTInstalled = NO;
+    __block BOOL dotfileSyncEnabled = NO;
     
-    if ([self.defaultsController.defaults boolForKey:@"xyz.tea.BASE.integrated-GitHub"]) {
-        self.greenCheckGitHubIntegration.hidden = NO;
-    }
-    if ([self.defaultsController.defaults boolForKey:@"xyz.tea.BASE.printed-GPG-emergency-kit"]) {
-        self.greenCheckGPGBackup.hidden = NO;
-    }
+    // Perform heavy operations in background
+    dispatch_group_async(group, backgroundQueue, ^{
+        [self updateSSHStates];
+    });
     
-    [self calculateSecurityRating];
+    dispatch_group_async(group, backgroundQueue, ^{
+        hasSignedCommits = [self gpgSignEnabled];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.gpgSignSwitch setState:hasSignedCommits ? NSControlStateValueOn : NSControlStateValueOff];
+            [self.gpgSignSwitch setEnabled:YES];
+        });
+    });
     
-    [self updateGitGudListing];
-    [self updateGitIdentity];
+    dispatch_group_async(group, backgroundQueue, ^{
+        [self updateVersions];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.dockerSwitch setState:self.dockerVersion.stringValue.length > 0 ? NSControlStateValueOn : NSControlStateValueOff];
+            [self.dockerSwitch setEnabled:YES];
+        });
+    });
     
-    id v = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    if (v) {
-        self.selfVersionLabel.stringValue = [NSString stringWithFormat:@"v%@", v];
-    }
+    dispatch_group_async(group, backgroundQueue, ^{
+        homebrewInstalled = [self homebrewInstalled];
+        pkgxInstalled = [self pkgxInstalled];
+        xcodeCLTInstalled = [self xcodeCLTInstalled];
+        dotfileSyncEnabled = self.dotfileSyncEnabled;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.homebrewSwitch setState:homebrewInstalled ? NSControlStateValueOn : NSControlStateValueOff];
+            [self.pkgxSwitch setState:pkgxInstalled ? NSControlStateValueOn : NSControlStateValueOff];
+            [self.xcodeCLTSwitch setState:xcodeCLTInstalled ? NSControlStateValueOn : NSControlStateValueOff];
+            [self.dotfileSyncSwitch setState:dotfileSyncEnabled ? NSControlStateValueOn : NSControlStateValueOff];
+            
+            [self.homebrewSwitch setEnabled:YES];
+            [self.pkgxSwitch setEnabled:YES];
+            [self.xcodeCLTSwitch setEnabled:YES];
+            [self.dotfileSyncSwitch setEnabled:YES];
+            
+            BOOL dotfileSyncActive = self.dotfileSyncSwitch.state == NSControlStateValueOn;
+            [self.dotfileSyncEditWhitelistButton setEnabled:dotfileSyncActive];
+            [self.dotfileSyncViewRepoButton setEnabled:dotfileSyncActive];
+        });
+    });
+    
+    // Once all background tasks complete, update remaining UI elements
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        if ([self.defaultsController.defaults boolForKey:@"xyz.tea.BASE.integrated-GitHub"]) {
+            self.greenCheckGitHubIntegration.hidden = NO;
+        }
+        if ([self.defaultsController.defaults boolForKey:@"xyz.tea.BASE.printed-GPG-emergency-kit"]) {
+            self.greenCheckGPGBackup.hidden = NO;
+        }
+        
+        [self calculateSecurityRating];
+        [self updateGitGudListing];
+        [self updateGitIdentity];
+        
+        id v = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+        if (v) {
+            self.selfVersionLabel.stringValue = [NSString stringWithFormat:@"v%@", v];
+        }
+    });
 }
 
 - (void)didSelect {
