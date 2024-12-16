@@ -134,31 +134,43 @@
     [task launchAndReturnError:&error];
     
     if (error) {
+        NSLog(@"teaBASE: xcodeCLTInstalled [error]: %@", error);
         return NO;
     }
     
     [task waitUntilExit];
+
+    NSLog(@"teaBASE: xcodeCLTInstalled [output]: %d", task.terminationStatus);
+
     return task.terminationStatus == 0;
 }
 
 - (BOOL)xcodeInstalled {
     NSTask *task = [[NSTask alloc] init];
-    [task setLaunchPath:@"/usr/bin/xcodebuild"];
-    [task setArguments:@[@"-version"]];
+    [task setLaunchPath:@"/usr/bin/mdfind"];
+    [task setArguments:@[@"kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"]];
     
-    NSPipe *nullPipe = [NSPipe pipe];
-    [task setStandardOutput:nullPipe];
-    [task setStandardError:nullPipe];
+    NSPipe *pipe = [NSPipe pipe];
+    [task setStandardOutput:pipe];
+    [task setStandardError:pipe];
     
     NSError *error = nil;
     [task launchAndReturnError:&error];
     
     if (error) {
+        NSLog(@"teaBASE: xcodeInstalled [error]: %@", error);
         return NO;
     }
     
+    NSFileHandle *fileHandle = [pipe fileHandleForReading];
+    NSData *data = [fileHandle readDataToEndOfFile];
+    NSString *output = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
     [task waitUntilExit];
-    return task.terminationStatus == 0;
+
+    NSLog(@"teaBASE: xcodeInstalled [output]: %@", output);
+
+    return output.length > 0;
 }
 
 - (void)updateVersions {
