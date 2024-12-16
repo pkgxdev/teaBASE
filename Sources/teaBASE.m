@@ -656,6 +656,13 @@
     NSString *pubkey = output(@"/usr/local/bin/bpb", @[@"print"]);
     NSString *privkey = output(@"/usr/bin/security", @[@"find-generic-password", @"-s", @"xyz.tea.BASE.bpb", @"-w"]);
     
+    if (!pubkey || !privkey) {
+        NSAlert *alert = [NSAlert new];
+        alert.informativeText = @"An error occurred trying to obtain your GPG keypair";
+        [alert runModal];
+        return;
+    }
+    
     id content = @"Public Key:\n\n";
     content = [content stringByAppendingString:pubkey];
     content = [content stringByAppendingString:@"\n\nPrivate Key:\n\n"];
