@@ -60,11 +60,32 @@
 			);
 			target = 632219842CB4173D00606A25 /* teaBASE */;
 		};
+		63B2126E2D11ED9D00F5E466 /* Exceptions for "Sources" folder in "teaBASE" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"teaBASE+DevTools.m",
+			);
+			target = 632219842CB4173D00606A25 /* teaBASE */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		63B2126F2D11ED9D00F5E466 /* Exceptions for "Sources" folder in "Headers" phase from "teaBASE" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 632219802CB4173D00606A25 /* Headers */;
+			membershipExceptions = (
+				"teaBASE+DevTools.m",
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		632219872CB4173D00606A25 /* Sources */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				63B2126E2D11ED9D00F5E466 /* Exceptions for "Sources" folder in "teaBASE" target */,
+				63B2126F2D11ED9D00F5E466 /* Exceptions for "Sources" folder in "Headers" phase from "teaBASE" target */,
+			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
