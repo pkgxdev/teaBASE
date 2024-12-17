@@ -66,16 +66,29 @@
 @property (weak) IBOutlet NSTextField *gitIdentityEmailLabel;
 @property (weak) IBOutlet NSWindow *gitIdentityWindow;
 
+- (void)calculateSecurityRating;
 
 @end
 
+@interface teaBASE (SSH)
+- (void)updateSSHStates;
+@end
+
+@interface teaBASE (GPG)
+- (BOOL)gpgSignEnabled;
+@end
 
 @interface teaBASE (Helpers)
 - (void)installSubexecutable:(NSString *)name;
+- (BOOL)xcodeCLTInstalled;
+- (BOOL)xcodeInstalled;
+- (BOOL)homebrewInstalled;
+- (BOOL)pkgxInstalled;
 @end
 
 @interface teaBASE (git)
 - (void)updateGitGudListing;
+- (void)updateGitIdentity;
 @end
 
 @interface teaBASE (dotfileSync)
