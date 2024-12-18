@@ -64,7 +64,7 @@ while gum confirm "Add additional files to pack?"; do
       else
         STEM="$STEM/$(basename "$x")"
       fi
-      rsync --archive "$STEM" home/"$STEM"
+      rsync --archive "$file" home/"$STEM"
     fi
   else
     rsync \
