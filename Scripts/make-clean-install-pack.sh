@@ -76,6 +76,6 @@ while gum confirm "Add additional files to pack?"; do
     rsync --archive "$file" home/"$STEM"
   else
     gum format "\`~/$STEM\`"
-    gum spin "rsync --archive --exclude=.DS_Store \"$file\" home"
+    gum spin rsync --archive --exclude=.DS_Store "$file" home
   fi
 done
