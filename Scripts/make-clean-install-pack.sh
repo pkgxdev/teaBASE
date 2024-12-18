@@ -24,6 +24,7 @@ for x in "$HOME"/.aws/* \
   "$HOME"/.config/fish/config.fish \
   "$HOME"/.*/**/config.xml \
   "$HOME"/.*/**/config.yml \
+  "$HOME"/.*/**/config.yaml \
   "$HOME"/.*/**/config.json \
   "$HOME"/.*/**/settings.json \
   "$HOME"/.gitconfig \
@@ -60,10 +61,10 @@ while gum confirm "Add additional files to pack?"; do
     else
       STEM="$(dirname "$STEM")"
       if test "$STEM" = "."; then
-        STEM="$(basename $x)"
+        STEM="$(basename $file)"
       else
         mkdir -p "home/$STEM"
-        STEM="$STEM/$(basename "$x")"
+        STEM="$STEM/$(basename "$file")"
       fi
       rsync --archive "$file" home/"$STEM"
     fi
