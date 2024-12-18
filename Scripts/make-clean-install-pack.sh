@@ -22,11 +22,15 @@ for x in "$HOME"/.aws/* \
   "$HOME"/.bash_profile \
   "$HOME"/.config/btop/btop.conf \
   "$HOME"/.config/fish/config.fish \
+  "$HOME"/.*/config.xml \
   "$HOME"/.*/**/config.xml \
+  "$HOME"/.*/config.yml \
   "$HOME"/.*/**/config.yml \
-  "$HOME"/.*/**/config.yaml \
   "$HOME"/.*/config.yaml \
+  "$HOME"/.*/**/config.yaml \
+  "$HOME"/.*/config.json \
   "$HOME"/.*/**/config.json \
+  "$HOME"/.*/settings.json \
   "$HOME"/.*/**/settings.json \
   "$HOME"/.gitconfig \
   "$HOME"/.profile \
