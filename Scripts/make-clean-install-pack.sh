@@ -15,45 +15,38 @@ fi
 echo #spacer
 gum format "## dotfiles" "Adding whitelisted files"
 
-mkdir home
+d="$PWD"
+cd "$HOME"
 
-for x in "$HOME"/.aws/* \
-  "$HOME"/.bash_login \
-  "$HOME"/.bashrc \
-  "$HOME"/.bash_profile \
-  "$HOME"/.config/btop/btop.conf \
-  "$HOME"/.config/fish/config.fish \
-  "$HOME"/.*/config.xml \
-  "$HOME"/.*/**/config.xml \
-  "$HOME"/.*/config.yml \
-  "$HOME"/.*/**/config.yml \
-  "$HOME"/.*/config.yaml \
-  "$HOME"/.*/**/config.yaml \
-  "$HOME"/.*/config.json \
-  "$HOME"/.*/**/config.json \
-  "$HOME"/.*/settings.json \
-  "$HOME"/.*/**/settings.json \
-  "$HOME"/.gitconfig \
-  "$HOME"/.profile \
-  "$HOME"/.ssh/* \
-  "$HOME"/.vimrc \
-  "$HOME"/.zprofile \
-  "$HOME"/.zshenv \
-  "$HOME"/.zshrc
+dotfiles=()
+
+for x in .aws/* \
+  .bash_login \
+  .bashrc \
+  .bash_profile \
+  .config/btop/btop.conf \
+  .config/fish/config.fish \
+  .*/config.xml \
+  .*/**/config.xml \
+  .*/config.yml \
+  .*/**/config.yml \
+  .*/config.yaml \
+  .*/**/config.yaml \
+  .*/config.json \
+  .*/**/config.json \
+  .*/settings.json \
+  .*/**/settings.json \
+  .gitconfig \
+  .profile \
+  .ssh/* \
+  .vimrc \
+  .zprofile \
+  .zshenv \
+  .zshrc
 do
   if test -f "$x"; then
-    STEM="${x#$HOME/}"
-    STEM="$(dirname "$STEM")"
-    if test "$STEM" = "."; then
-      STEM="$(basename $x)"
-    else
-      mkdir -p "home/$STEM"
-      STEM="$STEM/$(basename "$x")"
-    fi
-
+    dotfiles+=("$x")
     gum format "\`~/$STEM\`"
-
-    rsync -a "$x" "home/$STEM"
   fi
 done
 
@@ -64,18 +57,15 @@ while gum confirm "Add additional files to pack?"; do
   STEM="${file#$HOME/}"
   if test "$STEM" = "$file"; then
     gum format "error: \`$file\` is not in \`$HOME\`" >&2
-  elif test -f "$file"; then
+  else
     STEM="$(dirname "$STEM")"
     if test "$STEM" = "."; then
       STEM="$(basename "$file")"
     else
-      mkdir -p "home/$STEM"
       STEM="$STEM/$(basename "$file")"
     fi
     gum format "\`~/$STEM\`"
-    rsync --archive "$file" home/"$STEM"
-  else
-    gum spin --title "rsyncing \`~/$STEM\`…" -- rsync --archive --exclude=.DS_Store "$file" home
-    gum format "\`~/$STEM\`"
   fi
 done
+
+tar cf "$d/dotfiles.tar" "${dotfiles[@]}"
