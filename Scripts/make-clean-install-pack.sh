@@ -2,7 +2,7 @@
 
 gum format "# Creating Clean Install Pack"
 
-cd "$(mktemp -d)"
+cd "$(mktemp -d -t teaBASE.XXXXXX)"
 
 gum format \
   "> Using temporary location \`$PWD\`" \
@@ -36,11 +36,29 @@ for x in "$HOME"/.aws/config/* \
 do
   if test -f "$x"; then
     gum format "\`$x\`"
-    cp "$x" dotfiles
+
+    STEM="${x#$HOME/}"
+    STEM="$(dirname "$STEM")"
+    NAME="$(basename "$x")"
+    mkdir -p "dotfiles/$STEM"
+    rsync -a "$x" "dotfiles/$STEM/$NAME"
   fi
 done
 
 while gum confirm "Add additional files to pack?"; do
   file="$(gum file "$HOME" --all --file --directory)"
-  cp -r "$file" dotfiles
+  gum format "\`$file\`"
+  if test -f "$file"; then
+    gum format "\`$file\`"
+    cp "$file" dotfiles
+  else
+    # --ignore-errors ∵ don’t complain about fifos/sockets etc.
+    rsync \
+      --progress \
+      --archive \
+      --ignore-errors \
+      --exclude=.DS_Store \
+      "$file" \
+      dotfiles
+  fi
 done
