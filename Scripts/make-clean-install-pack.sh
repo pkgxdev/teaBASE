@@ -72,13 +72,10 @@ while gum confirm "Add additional files to pack?"; do
       mkdir -p "home/$STEM"
       STEM="$STEM/$(basename "$file")"
     fi
-    gum format "k, adding: \`~/$STEM\`…"
+    gum format "\`~/$STEM\`"
     rsync --archive "$file" home/"$STEM"
   else
-    gum format "k, adding: \`~/$STEM\`…"
-    rsync --archive \
-      --exclude=.DS_Store \
-      "$file" \
-      home
+    gum format "\`~/$STEM\`"
+    gum spin "rsync --archive --exclude=.DS_Store \"$file\" home"
   fi
 done
