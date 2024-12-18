@@ -1493,8 +1493,8 @@
                                     </textFieldCell>
                                 </textField>
                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vKH-jr-gBS">
-                                    <rect key="frame" x="312" y="13" width="123" height="32"/>
-                                    <buttonCell key="cell" type="push" title="Generate Pack" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="sC9-la-mRg">
+                                    <rect key="frame" x="302" y="13" width="133" height="32"/>
+                                    <buttonCell key="cell" type="push" title="Generate Pack…" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="sC9-la-mRg">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
