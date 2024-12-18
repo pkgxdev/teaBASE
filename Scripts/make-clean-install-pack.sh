@@ -16,7 +16,7 @@ gum format "## dotfiles" "Adding whitelisted files"
 
 mkdir home
 
-for x in "$HOME"/.aws/config/* \
+for x in "$HOME"/.aws/* \
   "$HOME"/.bash_login \
   "$HOME"/.bashrc \
   "$HOME"/.bash_profile \
@@ -54,13 +54,21 @@ while gum confirm "Add additional files to pack?"; do
   file="$(gum file "$HOME" --all --file --directory)"
   gum format "k, adding: \`$file\`…"
   if test -f "$file"; then
-    gum format "\`$file\`"
-    cp "$file" home
+    STEM="${file#$HOME/}"
+    if test "$STEM" = "$file"; then
+      echo "error: $file is not in $HOME" >&2
+    else
+      STEM="$(dirname "$STEM")"
+      if test "$STEM" = "."; then
+        STEM="$(basename $x)"
+      else
+        STEM="$STEM/$(basename "$x")"
+      fi
+      rsync --archive "$STEM" home/"$STEM"
+    fi
   else
-    # --ignore-errors ∵ don’t complain about fifos/sockets etc.
     rsync \
       --archive \
-      --ignore-errors \
       --exclude=.DS_Store \
       "$file" \
       home
