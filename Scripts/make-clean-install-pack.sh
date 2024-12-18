@@ -65,6 +65,7 @@ while gum confirm "Add additional files to pack?"; do
       STEM="$STEM/$(basename "$file")"
     fi
     gum format "\`~/$STEM\`"
+    dotfiles+=("$STEM")
   fi
 done
 
