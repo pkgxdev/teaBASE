@@ -37,18 +37,22 @@ do
   if test -f "$x"; then
     STEM="${x#$HOME/}"
     STEM="$(dirname "$STEM")"
-    NAME="$(basename "$x")"
+    if test "$STEM" = "."; then
+      STEM="$(basename $x)"
+    else
+      mkdir -p "home/$STEM"
+      STEM="$STEM/$(basename "$x")"
+    fi
 
-    gum format "\`~/$STEM/$NAME\`"
+    gum format "\`~/$STEM\`"
 
-    mkdir -p "home/$STEM"
-    rsync -a "$x" "home/$STEM/$NAME"
+    rsync -a "$x" "home/$STEM"
   fi
 done
 
 while gum confirm "Add additional files to pack?"; do
   file="$(gum file "$HOME" --all --file --directory)"
-  gum format "\`$file\`"
+  gum format "k, adding: \`$file\`…"
   if test -f "$file"; then
     gum format "\`$file\`"
     cp "$file" home
