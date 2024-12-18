@@ -22,10 +22,10 @@ for x in "$HOME"/.aws/* \
   "$HOME"/.bash_profile \
   "$HOME"/.config/btop/btop.conf \
   "$HOME"/.config/fish/config.fish \
-  "$HOME"/.config/**/config.xml \
-  "$HOME"/.config/**/config.yml \
-  "$HOME"/.config/**/config.json \
-  "$HOME"/.config/**/settings.json \
+  "$HOME"/.*/**/config.xml \
+  "$HOME"/.*/**/config.yml \
+  "$HOME"/.*/**/config.json \
+  "$HOME"/.*/**/settings.json \
   "$HOME"/.gitconfig \
   "$HOME"/.profile \
   "$HOME"/.ssh/* \
@@ -62,6 +62,7 @@ while gum confirm "Add additional files to pack?"; do
       if test "$STEM" = "."; then
         STEM="$(basename $x)"
       else
+        mkdir -p "home/$STEM"
         STEM="$STEM/$(basename "$x")"
       fi
       rsync --archive "$file" home/"$STEM"
