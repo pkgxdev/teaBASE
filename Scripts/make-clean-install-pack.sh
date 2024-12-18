@@ -1,12 +1,46 @@
-#!/usr/bin/env -S pkgx +mas bash -eo pipefail
+#!/usr/bin/env -S pkgx +gum bash -eo pipefail
+
+gum format "# Creating Clean Install Pack"
 
 cd "$(mktemp -d)"
+
+gum format \
+  "> Using temporary location \`$PWD\`" \
+  "## Running \`brew bundle dump\`"
 
 if command -v brew >/dev/null 2>&1; then
   brew bundle dump
 fi
 
-mkdir dotfiles
-find ~ -name .\* -maxdepth 1 -exec cp -R {} dotfiles
+gum format "## dotfiles" "Adding whitelisted files"
 
-echo $PWD
+mkdir dotfiles
+
+for x in "$HOME"/.aws/config/* \
+  "$HOME"/.bash_login \
+  "$HOME"/.bashrc \
+  "$HOME"/.bash_profile \
+  "$HOME"/.config/btop/btop.conf \
+  "$HOME"/.config/fish/config.fish \
+  "$HOME"/.config/**/config.xml \
+  "$HOME"/.config/**/config.yml \
+  "$HOME"/.config/**/config.json \
+  "$HOME"/.config/**/settings.json \
+  "$HOME"/.gitconfig \
+  "$HOME"/.profile \
+  "$HOME"/.ssh/* \
+  "$HOME"/.vimrc \
+  "$HOME"/.zprofile \
+  "$HOME"/.zshenv \
+  "$HOME"/.zshrc
+do
+  if test -f "$x"; then
+    gum format "\`$x\`"
+    cp "$x" dotfiles
+  fi
+done
+
+while gum confirm "Add additional files to pack?"; do
+  file="$(gum file "$HOME" --all --file --directory)"
+  cp -r "$file" dotfiles
+done
