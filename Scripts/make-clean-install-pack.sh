@@ -12,6 +12,7 @@ if command -v brew >/dev/null 2>&1; then
   brew bundle dump
 fi
 
+echo #spacer
 gum format "## dotfiles" "Adding whitelisted files"
 
 mkdir home
@@ -57,25 +58,25 @@ do
 done
 
 while gum confirm "Add additional files to pack?"; do
+
   file="$(gum file "$HOME" --all --file --directory)"
-  gum format "k, adding: \`$file\`…"
-  if test -f "$file"; then
-    STEM="${file#$HOME/}"
-    if test "$STEM" = "$file"; then
-      gum format "error: \`$file\` is not in \`$HOME\`" >&2
+
+  STEM="${file#$HOME/}"
+  if test "$STEM" = "$file"; then
+    gum format "error: \`$file\` is not in \`$HOME\`" >&2
+  elif test -f "$file"; then
+    STEM="$(dirname "$STEM")"
+    if test "$STEM" = "."; then
+      STEM="$(basename "$file")"
     else
-      STEM="$(dirname "$STEM")"
-      if test "$STEM" = "."; then
-        STEM="$(basename "$file")"
-      else
-        mkdir -p "home/$STEM"
-        STEM="$STEM/$(basename "$file")"
-      fi
-      rsync --archive "$file" home/"$STEM"
+      mkdir -p "home/$STEM"
+      STEM="$STEM/$(basename "$file")"
     fi
+    gum format "k, adding: \`~/$STEM\`…"
+    rsync --archive "$file" home/"$STEM"
   else
-    rsync \
-      --archive \
+    gum format "k, adding: \`~/$STEM\`…"
+    rsync --archive \
       --exclude=.DS_Store \
       "$file" \
       home
