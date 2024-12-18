@@ -25,6 +25,7 @@ for x in "$HOME"/.aws/* \
   "$HOME"/.*/**/config.xml \
   "$HOME"/.*/**/config.yml \
   "$HOME"/.*/**/config.yaml \
+  "$HOME"/.*/config.yaml \
   "$HOME"/.*/**/config.json \
   "$HOME"/.*/**/settings.json \
   "$HOME"/.gitconfig \
@@ -57,11 +58,11 @@ while gum confirm "Add additional files to pack?"; do
   if test -f "$file"; then
     STEM="${file#$HOME/}"
     if test "$STEM" = "$file"; then
-      echo "error: $file is not in $HOME" >&2
+      gum format "error: \`$file\` is not in \`$HOME\`" >&2
     else
       STEM="$(dirname "$STEM")"
       if test "$STEM" = "."; then
-        STEM="$(basename $file)"
+        STEM="$(basename "$file")"
       else
         mkdir -p "home/$STEM"
         STEM="$STEM/$(basename "$file")"
