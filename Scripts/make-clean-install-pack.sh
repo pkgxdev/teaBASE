@@ -2,7 +2,7 @@
 
 gum format "# Creating Clean Install Pack"
 
-cd "$(mktemp -d -t teaBASE.XXXXXX)"
+cd "$(mktemp -d -t teaBASE)"
 
 gum format \
   "> Using temporary location \`$PWD\`" \
@@ -14,7 +14,7 @@ fi
 
 gum format "## dotfiles" "Adding whitelisted files"
 
-mkdir dotfiles
+mkdir home
 
 for x in "$HOME"/.aws/config/* \
   "$HOME"/.bash_login \
@@ -35,13 +35,14 @@ for x in "$HOME"/.aws/config/* \
   "$HOME"/.zshrc
 do
   if test -f "$x"; then
-    gum format "\`$x\`"
-
     STEM="${x#$HOME/}"
     STEM="$(dirname "$STEM")"
     NAME="$(basename "$x")"
-    mkdir -p "dotfiles/$STEM"
-    rsync -a "$x" "dotfiles/$STEM/$NAME"
+
+    gum format "\`~/$STEM/$NAME\`"
+
+    mkdir -p "home/$STEM"
+    rsync -a "$x" "home/$STEM/$NAME"
   fi
 done
 
@@ -50,15 +51,14 @@ while gum confirm "Add additional files to pack?"; do
   gum format "\`$file\`"
   if test -f "$file"; then
     gum format "\`$file\`"
-    cp "$file" dotfiles
+    cp "$file" home
   else
     # --ignore-errors ∵ don’t complain about fifos/sockets etc.
     rsync \
-      --progress \
       --archive \
       --ignore-errors \
       --exclude=.DS_Store \
       "$file" \
-      dotfiles
+      home
   fi
 done
