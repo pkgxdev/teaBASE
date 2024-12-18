@@ -46,7 +46,7 @@ for x in .aws/* \
 do
   if test -f "$x"; then
     dotfiles+=("$x")
-    gum format "\`~/$STEM\`"
+    gum format "\`~/$x\`"
   fi
 done
 
