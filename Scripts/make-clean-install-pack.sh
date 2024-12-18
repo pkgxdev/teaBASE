@@ -69,4 +69,4 @@ while gum confirm "Add additional files to pack?"; do
   fi
 done
 
-tar cf "$d/dotfiles.tar" "${dotfiles[@]}"
+gum spin --title "creating tarball" -- tar czf "$d/dotfiles.tgz" "${dotfiles[@]}"
