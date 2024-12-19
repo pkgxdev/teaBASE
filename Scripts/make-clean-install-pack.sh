@@ -164,4 +164,5 @@ chmod +x restore.command
 mkdir .bin
 cp "$(which pkgx)" .bin
 
+cd /
 hdiutil detach "$d"
