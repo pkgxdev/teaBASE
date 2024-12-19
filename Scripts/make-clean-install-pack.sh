@@ -119,10 +119,6 @@ done
 
 cd "$d"
 
-PASSWORD=$(gum input --password --placeholder "enter encryption password")
-
-echo "'$PASSWORD'"
-
 #TODO pkg brew into pkgx
 cat <<EOSH >restore.sh
 #!/bin/bash
@@ -156,8 +152,13 @@ chmod +x restore.sh
 
 cp "$(which pkgx)" .
 
+gum format \
+  "# creating ~/Downloads/teaBASE-clean-install.dmg" \
+  "you will be prompted for an encryption password"
+
 hdiutil create \
   -srcfolder "$d" \
   -volname "teaBASE Clean Install" \
-  -encryption -stdinpass \
-  -o ~/Downloads/teaBASE-clean-install.dmg <<< "$PASSWORD"
+  -encryption AES-256 \
+  -stdinpass \
+  -o ~/Downloads/teaBASE-clean-install.dmg
