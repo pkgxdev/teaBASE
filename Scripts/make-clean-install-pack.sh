@@ -87,8 +87,7 @@ do
     else
       export d
       export -f add_file
-      export PATH
-      gum spin --show-output --title "Adding \`~/$STEM\`" -- $SHELL -c "add_file \"$STEM\""
+      gum spin --show-output --title "Adding \`~/$STEM\`" -- bash -c "add_file \"$STEM\""
     fi
 
     gum format "\`~/$STEM\`"
