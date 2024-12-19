@@ -54,11 +54,13 @@ done
 tar cf "$d/dotfiles.tar" "${dotfiles[@]}"
 
 add_file() {
+  STEM="$1"
+
   gitdirs=()
-  mapfile -d '' gitdirs < <(find "$1" -name .git -type d -print0)
+  mapfile -d '' gitdirs < <(find "$STEM" -name .git -type d -print0)
 
   if [ "${#gitdirs[@]}" -eq 0 ]; then
-    tar rf "$d/dotfiles.tar" "$1"
+    tar rf "$d/dotfiles.tar" "$STEM"
   else
     srcdirs=()
     for gitdir in "${gitdirs[@]}"; do
@@ -82,7 +84,7 @@ add_file() {
     done
 
     set -x
-    tar rf "$d/dotfiles.tar" "${excludes[@]}" "$1"
+    tar rf "$d/dotfiles.tar" "${excludes[@]}" "$STEM"
   fi
 }
 
