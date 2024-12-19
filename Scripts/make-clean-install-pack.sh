@@ -60,6 +60,7 @@ add_file() {
   echo "foo: $d $1 ${gitdirs[@]} ${#gitdirs[@]}"
 
   if [ "${#gitdirs[@]}" -eq 0 ]; then
+    set -x
     tar rf "$d/dotfiles.tar" "$1"
   else
     srcdirs=()
