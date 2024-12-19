@@ -1,6 +1,5 @@
 #!/usr/bin/env -S pkgx +gum bash>=4 -eo pipefail
-echo $PATH
-exit 1
+
 gum format "# Creating Clean Install Pack"
 
 cd "$(mktemp -d -t teaBASE)"
@@ -88,6 +87,7 @@ do
     else
       export d
       export -f add_file
+      export PATH
       gum spin --show-output --title "Adding \`~/$STEM\`" -- $SHELL -c "add_file \"$STEM\""
     fi
 
