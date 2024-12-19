@@ -53,6 +53,26 @@ done
 
 tar cf "$d/dotfiles.tar" "${dotfiles[@]}"
 
+add_file() {
+  gitdirs=()
+  mapfile -d '' gitdirs < <(find "$1" -name .git -type d -print0)
+
+  if [ "${#my_array[@]}" -eq 0 ]; then
+    tar rf "$d/dotfiles.tar" "$1"
+  else
+    srcdirs=()
+    for gitdir in "${gitdirs[@]}"; do
+      srcdirs+=("$(dirname "$gitdir")")
+
+      tracked_files=()
+      mapfile -d '' tracked_files < <(git -C "$dir" ls-files -z)
+      tar rf "$d/dotfiles.tar" "${tracked_files[@]}"
+    done
+  fi
+
+  tar rf "$d/dotfiles.tar" "${srcdirs[@]}"
+}
+
 while gum confirm "Add additional files to pack?"
 do
   file="$(gum file "$HOME" --all --file --directory)"
@@ -62,28 +82,18 @@ do
   if test "$STEM" = "$file"; then
     gum format "error: \`$file\` is not in \`$HOME\`" >&2
   else
-    gitdirs=()
-    mapfile -d '' gitdirs < <(gum spin --title "scanning for gitignores" -- find "$STEM" -name .git -type d -print0)
-
-    if [ "${#my_array[@]}" -eq 0 ]; then
+    if test -f "$file"; then
       tar rf "$d/dotfiles.tar" "$STEM"
     else
-      srcdirs=()
-      for gitdir in "${gitdirs[@]}"; do
-          srcdirs+=("$(dirname "$gitdir")")
-
-          tracked_files=()
-          mapfile -d '' tracked_files < <(git -C "$dir" ls-files -z)
-          tar rf "$d/dotfiles.tar" "${tracked_files[@]}"
-      done
-
-      tar rf "$d/dotfiles.tar" "${srcdirs[@]}"
+      export d
+      export -f add_file
+      gum spin --title "Adding \`~/$STEM\`" -- $SHELL -c "add_file \"$STEM\""
     fi
 
     gum format "\`~/$STEM\`"
   fi
 done
 
-gum spin --title "compressing tarball" -- gz "$d/dotfiles.tar"
+gum spin --title "compressing tarball" -- gzip "$d/dotfiles.tar"
 
 cd "$d"
