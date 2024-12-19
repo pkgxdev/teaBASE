@@ -72,7 +72,7 @@ add_file() {
 
       tracked_with_stem=()
       for file in "${tracked_files[@]}"; do
-          tracked_with_stem+=("$STEM/$file")
+          tracked_with_stem+=("$srcdir/$file")
       done
 
       tar rf "$d/dotfiles.tar" "${tracked_with_stem[@]}" "$gitdir"
