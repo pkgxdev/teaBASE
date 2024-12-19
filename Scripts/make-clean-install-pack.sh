@@ -10,12 +10,9 @@ hdiutil create \
     -volname "teaBASE Clean Install" \
     -encryption AES-256 \
     -stdinpass \
+    -attach \
     -type SPARSEBUNDLE \
     ~/Downloads/Clean\ Install\ Pack.sparsebundle
-
-gum format "## let’s verify that password"
-
-hdiutil attach ~/Downloads/Clean\ Install\ Pack.sparsebundle
 
 cd "/Volumes/teaBASE Clean Install"
 
