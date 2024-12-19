@@ -165,5 +165,7 @@ chmod +x restore.command
 mkdir .bin
 cp "$(which pkgx)" .bin
 
-cd /  # or it won’t detach
+cd ~/Downloads  # or it won’t detach
 hdiutil detach "$d"
+
+hdiutil convert Clean\ Install\ Pack.sparsebundle -format UDZO -o Clean\ Install\ Pack.dmg
