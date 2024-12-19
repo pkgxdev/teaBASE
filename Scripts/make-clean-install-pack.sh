@@ -55,6 +55,7 @@ for x in .aws/* \
   .zprofile \
   .zshenv \
   .zshrc \
+  "${XDG_DATA_HOME:-$HOME/.local/share}"/pkgx/bpb.toml \
   "${XDG_CONFIG_HOME:-$HOME/.config}"/pkgx/bpb.toml
 do
   if test -f "$x"; then
