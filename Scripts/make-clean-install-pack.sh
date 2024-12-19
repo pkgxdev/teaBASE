@@ -53,8 +53,8 @@ done
 
 tar cf "$d/dotfiles.tar" "${dotfiles[@]}"
 
-while gum confirm "Add additional files to pack?"; do
-
+while gum confirm "Add additional files to pack?"
+do
   file="$(gum file "$HOME" --all --file --directory)"
 
   STEM="${file#$HOME/}"
@@ -78,7 +78,7 @@ while gum confirm "Add additional files to pack?"; do
       done
 
       tar rf "$d/dotfiles.tar" "${srcdirs[@]}"
-    done
+    fi
 
     gum format "\`~/$STEM\`"
   fi
