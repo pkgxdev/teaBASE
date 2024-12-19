@@ -136,10 +136,10 @@ cd "$d"
 if test -x /usr/local/bin/bpb && gum confirm "include GPG private key?"; then
   gum format "# you will be prompted for your login password"
 
-  BPB="$(security find-generic-password -s xyz.tea.BASE.bpb -w)"
+  BPB="gum format "$(security find-generic-password -s xyz.tea.BASE.bpb -w)"
 
   if test "$BPB"; then
-    BPB=".bin/bpb import $BPB"
+    BPB="# importing GPG private key"\n.bin/bpb import $BPB"
   fi
 fi
 
@@ -167,9 +167,10 @@ if test -f Brewfile; then
   /bin/bash -c "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
   PATH="/opt/homebrew/bin:\$PATH" brew bundle install
-
-  $BPB
 fi
+
+$BPB
+
 EoSH
 
 chmod +x restore.command
