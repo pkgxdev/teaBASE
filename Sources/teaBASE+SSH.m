@@ -18,8 +18,8 @@
 - (NSString *)sshPrivateKeyFile {
     NSURL *home = [NSFileManager.defaultManager homeDirectoryForCurrentUser];
     
-    //TODO filenames can be arbituary and configurable which makes life complex
-    // eg. we could just try and figure out what is used for github, but that's not our *whole* story is it?
+    //TODO filenames can be arbitrary and configurable which makes life complex
+    // e.g we could just try and figure out what is used for github, but that's not our *whole* story is it?
     
     //NOTE order is same as ssh sources read order
     for (NSString *file in @[@"id_rsa", @"id_dsa", @"id_ecdsa", @"id_ed25519"]) {
@@ -189,7 +189,7 @@
         return;
     }
 
-    // Break the pubkic key content into 70-char lines (aligned with the private key visually) to make it fit the page
+    // Break the public key content into 70-char lines (aligned with the private key visually) to make it fit the page
     NSMutableString *formattedContent = [NSMutableString string];
     NSUInteger lineLength = 70;
     NSUInteger currentIndex = 0;
