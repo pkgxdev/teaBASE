@@ -57,7 +57,9 @@ add_file() {
   gitdirs=()
   mapfile -d '' gitdirs < <(find "$1" -name .git -type d -print0)
 
-  if [ "${#my_array[@]}" -eq 0 ]; then
+  echo "foo: ${gitdirs[@]}"
+
+  if [ "${#gitdirs[@]}" -eq 0 ]; then
     tar rf "$d/dotfiles.tar" "$1"
   else
     srcdirs=()
