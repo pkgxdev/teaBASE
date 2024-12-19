@@ -122,7 +122,7 @@ cd "$d"
 PASSWORD=$(gum input --password --placeholder "enter encryption password")
 
 #TODO pkg brew into pkgx
-cat <<EOF >restore.sh
+cat <<EOSH >restore.sh
 #!/bin/bash
 
 set -eo pipefail
@@ -148,7 +148,7 @@ if test -f Brewfile; then
 
   brew bundle install
 fi
-EOF
+EOSH
 
 chmod +x restore.sh
 
