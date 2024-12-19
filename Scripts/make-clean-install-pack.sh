@@ -85,10 +85,9 @@ add_file() {
 
     excludes=()
     for srcdir in "${srcdirs[@]}"; do
-      srcdir+=("--exclude=$exclude")
+      excludes+=("--exclude=$exclude")
     done
 
-    set -x
     tar rf "$d/dotfiles.tar" "${excludes[@]}" "$STEM"
   fi
 }
@@ -112,10 +111,8 @@ do
     else
       export d
       export -f add_file
-      gum spin --show-output --title "Adding \`~/$STEM\`" -- bash -c "add_file \"$STEM\""
+      gum spin --show-output --title "adding \`~/$STEM\`" -- bash -c "add_file \"$STEM\""
     fi
-
-    gum format "\`~/$STEM\`"
   fi
 done
 
