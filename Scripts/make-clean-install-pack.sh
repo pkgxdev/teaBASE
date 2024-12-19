@@ -85,7 +85,7 @@ add_file() {
 
     excludes=()
     for srcdir in "${srcdirs[@]}"; do
-      excludes+=("--exclude=$exclude")
+      excludes+=("--exclude=$srcdir")
     done
 
     tar rf "$d/dotfiles.tar" "${excludes[@]}" "$STEM"
