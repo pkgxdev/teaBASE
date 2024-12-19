@@ -54,7 +54,8 @@ for x in .aws/* \
   .vimrc \
   .zprofile \
   .zshenv \
-  .zshrc
+  .zshrc \
+  "${XDG_CONFIG_HOME:-$HOME/.config}"/pkgx/bpb.toml \
 do
   if test -f "$x"; then
     dotfiles+=("$x")
@@ -130,8 +131,15 @@ done
 
 cd "$d"
 
+if test -x /usr/local/bin/bpb; then
+  BPB="$(security find-generic-password -s xyz.tea.BASE.bpb -w)"
+  if test "$BPB"; then
+    BPB=".bin/bpb import $BPB"
+  fi
+fi
+
 #TODO pkg brew into pkgx
-cat <<EOSH >restore.command
+cat <<EoSH >restore.command
 #!/bin/bash
 
 set -eo pipefail
@@ -142,11 +150,9 @@ set -a
 eval "\$(.bin/pkgx +gum +mas)"
 set +a
 
-if ! gum confirm "extract dotfiles to \\\`\$HOME\\\`?"; then
-  exit 1
+if gum confirm "extract dotfiles to \\\`\$HOME\\\`?"; then
+  tar xf dotfiles.tar --cd "\$HOME"
 fi
-
-tar xf dotfiles.tar --cd "\$HOME"
 
 if test -f Brewfile; then
   if ! gum confirm 'install Homebrew; restore \`Brewfile\`?'; then
@@ -155,14 +161,20 @@ if test -f Brewfile; then
 
   /bin/bash -c "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-  PATH="/opt/homebrew/bin:$PATH" brew bundle install
+  PATH="/opt/homebrew/bin:\$PATH" brew bundle install
+
+  $BPB
 fi
-EOSH
+EoSH
 
 chmod +x restore.command
 
 mkdir .bin
 cp "$(which pkgx)" .bin
+if test "$BPB"; then
+  cp "$(which bpb)" .bin
+  unset BPB
+fi
 
 cd ~/Downloads  # or it won’t detach
 hdiutil detach "$d"
