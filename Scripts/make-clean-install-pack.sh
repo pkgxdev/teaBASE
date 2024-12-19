@@ -120,7 +120,7 @@ done
 cd "$d"
 
 #TODO pkg brew into pkgx
-cat <<EOSH >restore.sh
+cat <<EOSH >restore.command
 #!/bin/bash
 
 set -eo pipefail
@@ -128,17 +128,17 @@ set -eo pipefail
 cd "\$(dirname "\$0")"
 
 set -a
-eval "\$(./pkgx +gum +mas)"
+eval "\$(.bin/pkgx +gum +mas)"
 set +a
 
-if ! gum confirm "extract dotfiles to ~?"; then
+if ! gum confirm "extract dotfiles to \\\`\$HOME\\\`?"; then
   exit 1
 fi
 
-tar -C "\$HOME" xf dotfiles.tar
+tar xf dotfiles.tar --cd "\$HOME"
 
 if test -f Brewfile; then
-  if ! gum confirm 'install Homebrew and \`Brewfile\`?'; then
+  if ! gum confirm 'install Homebrew; restore \`Brewfile\`?'; then
     exit 2
   fi
 
@@ -148,9 +148,10 @@ if test -f Brewfile; then
 fi
 EOSH
 
-chmod +x restore.sh
+chmod +x restore.command
 
-cp "$(which pkgx)" .
+mkdir .bin
+cp "$(which pkgx)" .bin
 
 gum format \
   "# creating ~/Downloads/teaBASE-clean-install.dmg" \
