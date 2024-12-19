@@ -87,13 +87,13 @@ do
     else
       export d
       export -f add_file
-      gum spin --title "Adding \`~/$STEM\`" -- $SHELL -c "add_file \"$STEM\""
+      gum spin --title --show-output "Adding \`~/$STEM\`" -- $SHELL -c "add_file \"$STEM\""
     fi
 
     gum format "\`~/$STEM\`"
   fi
 done
 
-gum spin --title "compressing tarball" -- gzip "$d/dotfiles.tar"
+gum spin --show-output --title "compressing tarball" -- gzip "$d/dotfiles.tar"
 
 cd "$d"
