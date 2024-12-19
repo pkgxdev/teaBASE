@@ -125,20 +125,20 @@ cat <<EOSH >restore.sh
 
 set -eo pipefail
 
-cd "$(dirname "$0")"
+cd "\$(dirname "\$0")"
 
 set -a
-eval "$(./pkgx +gum +mas)"
+eval "\$(./pkgx +gum +mas)"
 set +a
 
 if ! gum confirm "extract dotfiles to ~?"; then
   exit 1
 fi
 
-tar -C "$HOME" xf dotfiles.tar
+tar -C "\$HOME" xf dotfiles.tar
 
 if test -f Brewfile; then
-  if ! gum confirm 'install Homebrew and `Brewfile`?'; then
+  if ! gum confirm 'install Homebrew and \`Brewfile\`?'; then
     exit 2
   fi
 
@@ -155,6 +155,7 @@ cp "$(which pkgx)" .
 gum format \
   "# creating ~/Downloads/teaBASE-clean-install.dmg" \
   "you will be prompted for an encryption password"
+echo  #spacer
 
 hdiutil create \
   -srcfolder "$d" \
