@@ -57,11 +57,7 @@ add_file() {
   gitdirs=()
   mapfile -d '' gitdirs < <(find "$1" -name .git -type d -print0)
 
-  echo "foo: $d $1 ${gitdirs[@]} ${#gitdirs[@]}"
-
   if [ "${#gitdirs[@]}" -eq 0 ]; then
-    set -x
-    echo hi $1
     tar rf "$d/dotfiles.tar" "$1"
   else
     srcdirs=()
@@ -73,9 +69,9 @@ add_file() {
       mapfile -d '' tracked_files < <(git -C "$srcdir" ls-files -z)
       tar rf "$d/dotfiles.tar" "${tracked_files[@]}" "$gitdir"
     done
-  fi
 
-  tar rf "$d/dotfiles.tar" "${srcdirs[@]}"
+    tar rf "$d/dotfiles.tar" "${srcdirs[@]}"
+  fi
 }
 
 while gum confirm "Add additional files to pack?"
