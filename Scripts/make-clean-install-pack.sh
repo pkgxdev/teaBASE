@@ -121,6 +121,8 @@ cd "$d"
 
 PASSWORD=$(gum input --password --placeholder "enter encryption password")
 
+echo "'$PASSWORD'"
+
 #TODO pkg brew into pkgx
 cat <<EOSH >restore.sh
 #!/bin/bash
