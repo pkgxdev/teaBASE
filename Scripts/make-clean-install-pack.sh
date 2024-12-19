@@ -6,10 +6,11 @@ gum format \
   "## firstly we need an encryption password"
 
 hdiutil create \
-    -size 100m \
+    -size 20g \
     -volname "teaBASE Clean Install" \
     -encryption AES-256 \
     -stdinpass \
+    -type SPARSEBUNDLE \
     ~/Downloads/Clean\ Install\ Pack.dmg
 
 gum format "## let’s verify that password"
@@ -164,5 +165,5 @@ chmod +x restore.command
 mkdir .bin
 cp "$(which pkgx)" .bin
 
-cd /
+cd /  # or it won’t detach
 hdiutil detach "$d"
