@@ -1,19 +1,30 @@
 #!/usr/bin/env -S pkgx +gum bash>=4 -eo pipefail
 
-gum format "# Creating Clean Install Pack"
-
-cd "$(mktemp -d -t teaBASE)"
-
 gum format \
-  "> Using temporary location \`$PWD\`" \
-  "## Running \`brew bundle dump\`"
+  "# teaBASE clean install pack" \
+  "clean installing your machine regularly is great developer hygiene." \
+  "## firstly we need an encryption password"
+
+hdiutil create \
+    -size 100m \
+    -volname "teaBASE Clean Install" \
+    -encryption AES-256 \
+    -stdinpass \
+    ~/Downloads/Clean\ Install\ Pack.dmg
+
+gum format "## let’s verify that password"
+
+hdiutil attach ~/Downloads/Clean\ Install\ Pack.dmg
+
+cd "/Volumes/teaBASE Clean Install"
 
 if command -v brew >/dev/null 2>&1; then
+  gum format "## Running \`brew bundle dump\`"
   brew bundle dump
 fi
 
 echo #spacer
-gum format "## dotfiles" "Adding whitelisted files"
+gum format "## dotfiles" "adding whitelisted files"
 
 d="$PWD"
 cd "$HOME"
@@ -144,7 +155,7 @@ if test -f Brewfile; then
 
   /bin/bash -c "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-  brew bundle install
+  PATH="/opt/homebrew/bin:$PATH" brew bundle install
 fi
 EOSH
 
@@ -153,14 +164,4 @@ chmod +x restore.command
 mkdir .bin
 cp "$(which pkgx)" .bin
 
-gum format \
-  "# creating ~/Downloads/teaBASE-clean-install.dmg" \
-  "you will be prompted for an encryption password"
-echo  #spacer
-
-hdiutil create \
-  -srcfolder "$d" \
-  -volname "teaBASE Clean Install" \
-  -encryption AES-256 \
-  -stdinpass \
-  -o ~/Downloads/teaBASE-clean-install.dmg
+hdiutil detach "$d"
