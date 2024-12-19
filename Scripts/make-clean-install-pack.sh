@@ -63,9 +63,17 @@ add_file() {
     srcdirs=()
     for gitdir in "${gitdirs[@]}"; do
       srcdir="$(dirname "$gitdir")"
+      srcdirs+=("$srcdir")
+
       tracked_files=()
       mapfile -d '' tracked_files < <(git -C "$srcdir" ls-files -z)
-      tar rf "$d/dotfiles.tar" "${tracked_files[@]}" "$gitdir"
+
+      tracked_with_stem=()
+      for file in "${tracked_files[@]}"; do
+          tracked_with_stem+=("$STEM/$file")
+      done
+
+      tar rf "$d/dotfiles.tar" "${tracked_with_stem[@]}" "$gitdir"
     done
 
     excludes=()
@@ -78,7 +86,12 @@ add_file() {
   fi
 }
 
-while gum confirm "Add additional files to pack?"
+gum format \
+  "# add additional files" \
+  "for example, you may like to add your \`~/srcs\` directory." \
+  "> note, we exclude files according to any discovered \`.gitignore\` files."
+
+while gum confirm "add additional files to pack?"
 do
   file="$(gum file "$HOME" --all --file --directory)"
 
