@@ -67,12 +67,17 @@ add_file() {
       srcdir="$(dirname "$gitdir")"
       srcdirs+=("$srcdir")
 
+      # get a list of all files except those that are ignored
+      # rationale: `node_modules` etc. are gigabytes of caching
       tracked_files=()
-      mapfile -d '' tracked_files < <(git -C "$srcdir" ls-files -z)
+      mapfile -d '' tracked_files < <(git -C "$srcdir" ls-files --others --exclude-standard -z)
 
       tracked_with_stem=()
       for file in "${tracked_files[@]}"; do
+        if test -e "$file"; then
+          # ^^ file may be in the tracking index, but deleted
           tracked_with_stem+=("$srcdir/$file")
+        fi
       done
 
       tar rf "$d/dotfiles.tar" "${tracked_with_stem[@]}" "$gitdir"
