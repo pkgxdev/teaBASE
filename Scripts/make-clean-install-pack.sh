@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pkgx +gum bash^4 -eo pipefail
+#!/usr/bin/env -S pkgx +gum bash>=4 -eo pipefail
 
 gum format "# Creating Clean Install Pack"
 
