@@ -1462,8 +1462,8 @@
                         </tabViewItems>
                     </tabView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ehx-XP-vF7">
-                        <rect key="frame" x="23" y="219" width="119" height="16"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Clean Install Pack" id="Z0f-Uj-az4">
+                        <rect key="frame" x="23" y="219" width="122" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Clean‑Install Pack" id="Z0f-Uj-az4">
                             <font key="font" metaFont="systemBold"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1477,7 +1477,7 @@
                             <subviews>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Nup-7e-8Ud">
                                     <rect key="frame" x="18" y="98" width="412" height="32"/>
-                                    <textFieldCell key="cell" title="There’s nothing more secure than a clean slate. Aim to clean install every six months. We can help with that." id="s09-GO-UFq">
+                                    <textFieldCell key="cell" title="There’s nothing more secure than a clean slate. Aim to clean‑install every six months. We can help with that." id="s09-GO-UFq">
                                         <font key="font" metaFont="systemMedium" size="13"/>
                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

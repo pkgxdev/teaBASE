@@ -1,4 +1,4 @@
-#!/usr/bin/env -S pkgx +gum bash -eo pipefail
+#!/usr/bin/env -S pkgx +gum bash^4 -eo pipefail
 
 gum format "# Creating Clean Install Pack"
 
@@ -20,6 +20,7 @@ cd "$HOME"
 
 dotfiles=()
 
+# note, not space safe
 for x in .aws/* \
   .bash_login \
   .bashrc \
@@ -50,23 +51,39 @@ do
   fi
 done
 
+tar cf "$d/dotfiles.tar" "${dotfiles[@]}"
+
 while gum confirm "Add additional files to pack?"; do
 
   file="$(gum file "$HOME" --all --file --directory)"
 
   STEM="${file#$HOME/}"
+
   if test "$STEM" = "$file"; then
     gum format "error: \`$file\` is not in \`$HOME\`" >&2
   else
-    STEM="$(dirname "$STEM")"
-    if test "$STEM" = "."; then
-      STEM="$(basename "$file")"
+    gitdirs=()
+    mapfile -d '' gitdirs < <(gum spin --title "scanning for gitignores" -- find "$STEM" -name .git -type d -print0)
+
+    if [ "${#my_array[@]}" -eq 0 ]; then
+      tar rf "$d/dotfiles.tar" "$STEM"
     else
-      STEM="$STEM/$(basename "$file")"
-    fi
+      srcdirs=()
+      for gitdir in "${gitdirs[@]}"; do
+          srcdirs+=("$(dirname "$gitdir")")
+
+          tracked_files=()
+          mapfile -d '' tracked_files < <(git -C "$dir" ls-files -z)
+          tar rf "$d/dotfiles.tar" "${tracked_files[@]}"
+      done
+
+      tar rf "$d/dotfiles.tar" "${srcdirs[@]}"
+    done
+
     gum format "\`~/$STEM\`"
-    dotfiles+=("$STEM")
   fi
 done
 
-gum spin --title "creating tarball" -- tar czf "$d/dotfiles.tgz" "${dotfiles[@]}"
+gum spin --title "compressing tarball" -- gz "$d/dotfiles.tar"
+
+cd "$d"
