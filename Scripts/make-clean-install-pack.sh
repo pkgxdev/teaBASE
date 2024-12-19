@@ -5,6 +5,8 @@ gum format \
   "clean installing your machine regularly is great developer hygiene." \
   "## firstly we need an encryption password"
 
+tmpdir="$(mktemp -d -t teaBASE)"
+
 hdiutil create \
     -size 20g \
     -volname "teaBASE Clean Install" \
@@ -12,7 +14,7 @@ hdiutil create \
     -stdinpass \
     -attach \
     -type SPARSEBUNDLE \
-    ~/Downloads/Clean\ Install\ Pack.sparsebundle
+    "$tmpdir"/tmp.sparsebundle
 
 cd "/Volumes/teaBASE Clean Install"
 
@@ -165,4 +167,6 @@ cp "$(which pkgx)" .bin
 cd ~/Downloads  # or it won’t detach
 hdiutil detach "$d"
 
-hdiutil convert Clean\ Install\ Pack.sparsebundle -format UDZO -o Clean\ Install\ Pack.dmg
+hdiutil convert $tmpdir/tmp.sparsebundle -format UDZO -o Clean\ Install\ Pack.dmg
+
+rm -rf "$tmpdir"
