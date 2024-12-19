@@ -62,11 +62,12 @@ add_file() {
   else
     srcdirs=()
     for gitdir in "${gitdirs[@]}"; do
-      srcdirs+=("$(dirname "$gitdir")")
+      srcdir="$(dirname "$gitdir")"
+      srcdirs+=("$srcdir")
 
       tracked_files=()
-      mapfile -d '' tracked_files < <(git -C "$dir" ls-files -z)
-      tar rf "$d/dotfiles.tar" "${tracked_files[@]}"
+      mapfile -d '' tracked_files < <(git -C "$srcdir" ls-files -z)
+      tar rf "$d/dotfiles.tar" "${tracked_files[@]}" "$gitdir"
     done
   fi
 
