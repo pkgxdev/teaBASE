@@ -95,7 +95,8 @@ add_file() {
 gum format \
   "# add additional files" \
   "for example, you may like to add your \`~/srcs\` directory." \
-  "> note, we exclude files according to any discovered \`.gitignore\` files."
+  "> we exclude files according to any discovered \`.gitignore\` files." \
+  "> add dotfiles to our whitelist: https://github.com/teaxyz/teaBASE/issues/new"
 
 while gum confirm "add additional files to pack?"
 do
@@ -116,6 +117,45 @@ do
   fi
 done
 
-gum spin --show-output --title "compressing tarball" -- gzip "$d/dotfiles.tar"
-
 cd "$d"
+
+PASSWORD=$(gum input --password --placeholder "enter encryption password")
+
+#TODO pkg brew into pkgx
+cat <<EOF >restore.sh
+#!/bin/bash
+
+set -eo pipefail
+
+cd "$(dirname "$0")"
+
+set -a
+eval "$(./pkgx +gum +mas)"
+set +a
+
+if ! gum confirm "extract dotfiles to ~?"; then
+  exit 1
+fi
+
+tar -C "$HOME" xf dotfiles.tar
+
+if test -f Brewfile; then
+  if ! gum confirm 'install Homebrew and `Brewfile`?'; then
+    exit 2
+  fi
+
+  /bin/bash -c "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  brew bundle install
+fi
+EOF
+
+chmod +x restore.sh
+
+cp "$(which pkgx)" .
+
+hdiutil create \
+  -srcfolder "$d" \
+  -volname "teaBASE Clean Install" \
+  -encryption -stdinpass \
+  -o ~/Downloads/teaBASE-clean-install.dmg <<< "$PASSWORD"
