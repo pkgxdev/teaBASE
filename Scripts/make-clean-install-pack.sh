@@ -57,7 +57,7 @@ add_file() {
   gitdirs=()
   mapfile -d '' gitdirs < <(find "$1" -name .git -type d -print0)
 
-  echo "foo: $1 ${gitdirs[@]}"
+  echo "foo: $1 ${gitdirs[@]} ${#gitdirs[@]}"
 
   if [ "${#gitdirs[@]}" -eq 0 ]; then
     tar rf "$d/dotfiles.tar" "$1"
