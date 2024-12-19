@@ -108,6 +108,7 @@ gum format \
   "# add additional files" \
   "for example, you may like to add your \`~/srcs\` directory." \
   "> we exclude files according to any discovered \`.gitignore\` files." \
+  "or dotfiles we didn’t add above" \
   "> add dotfiles to our whitelist: https://github.com/teaxyz/teaBASE/issues/new"
 
 while gum confirm "add additional files to pack?"
